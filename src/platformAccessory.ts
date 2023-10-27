@@ -1,6 +1,6 @@
 import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
 
-import { ExampleHomebridgePlatform } from './platform';
+import { MonacoPlatform } from './platform';
 
 import { Monarco } from 'monarco-hat';
 
@@ -9,7 +9,7 @@ import { Monarco } from 'monarco-hat';
  * An instance of this class is created for each accessory your platform registers
  * Each accessory may expose multiple services of different service types.
  */
-export class ExamplePlatformAccessory {
+export class LunosFanAccessory {
   private service: Service;
 
   /**
@@ -22,7 +22,7 @@ export class ExamplePlatformAccessory {
   };
 
   constructor(
-    private readonly platform: ExampleHomebridgePlatform,
+    private readonly platform: MonarcoPlatform,
     private readonly accessory: PlatformAccessory,
   ) {
 
@@ -38,7 +38,7 @@ export class ExamplePlatformAccessory {
 
     // set the service name, this is what is displayed as the default name on the Home app
     // in this example we are using the name we stored in the `accessory.context` in the `discoverDevices` method.
-    this.service.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.exampleDisplayName);
+    this.service.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.displayName);
 
     // register handlers for the OmActive Characteristic
     this.service.getCharacteristic(this.platform.Characteristic.Active)

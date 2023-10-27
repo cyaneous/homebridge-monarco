@@ -1,5 +1,5 @@
 {
-  "pluginAlias": "MonarcoLunos",
+  "pluginAlias": "Monarco",
   "pluginType": "platform",
   "singular": true,
   "schema": {
@@ -9,7 +9,7 @@
         "title": "Name",
         "type": "string",
         "required": true,
-        "default": "Monarco Lunos"
+        "default": "Monarco"
       }
     }
   }

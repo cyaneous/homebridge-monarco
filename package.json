@@ -1,15 +1,15 @@
 {
-  "displayName": "Lunos HRV",
-  "name": "homebridge-monarco-lunos",
+  "displayName": "Homebridge Monarco",
+  "name": "homebridge-monarco",
   "version": "0.0.1",
-  "description": "Control two Lunos HRVs via Monarco HAT on Raspberry Pi.",
+  "description": "Homebridge platform supporting the Monarco HAT on Raspberry Pi.",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cyaneous/homebridge-monarco-lunos.git"
+    "url": "https://github.com/cyaneous/homebridge-monarco.git"
   },
   "bugs": {
-    "url": "https://github.com/cyaneous/homebridge-monarco-lunos/issues"
+    "url": "https://github.com/cyaneous/homebridge-monarco/issues"
   },
   "engines": {
     "node": ">=18.17.0",
