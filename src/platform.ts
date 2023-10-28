@@ -3,7 +3,7 @@ import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, 
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
 import { LunosFanAccessory } from './platformAccessory';
 
-import { Monarco } from 'monarco-hat';
+import { monarco } from 'monarco-hat';
 
 /**
  * HomebridgePlatform
@@ -30,7 +30,13 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
     // to start discovery of new accessories.
     this.api.on('didFinishLaunching', () => {
       log.debug('Executed didFinishLaunching callback');
-      this.configureDevices();
+      monarco.init().then(() => {
+        this.configureDevices();
+      });
+
+      monarco.on('err', (err, msg) => {
+        this.log.error('Error:' + err);
+      });
     });
   }
 
@@ -50,10 +56,16 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
       {
         uniqueId: 'ABCD',
         displayName: 'Lunos e2',
+        model: 'e2',
+        analogOutput: 0,
+        digitalInput: -1,
       },
       {
         uniqueId: 'EFGH',
         displayName: 'Lunos eGO',
+        model: 'ego',
+        analogOutput: 1,
+        digitalInput: 1,
       },
     ];
 
