@@ -22,7 +22,6 @@ export class LunosFanAccessory {
   private service: Service;
   private model: string;
   private analogOutput: number;
-  private digitalInput: number;
 
   private state = {
     Active: false,
@@ -36,7 +35,6 @@ export class LunosFanAccessory {
   ) {
     this.model = accessory.context.device.model;
     this.analogOutput = accessory.context.device.analogOutput;
-    this.digitalInput = accessory.context.device.digitalInput;
 
     // set accessory information
     this.accessory.getService(this.platform.Service.AccessoryInformation)!
@@ -61,39 +59,6 @@ export class LunosFanAccessory {
     this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed)
       .setProps({ minStep: 25, minValue: 0, maxValue: 100 })
       .onSet(this.setRotationSpeed.bind(this)); 
-
-    if (this.digitalInput !== 0) {
-      /**
-       * Creating multiple services of the same type.
-       *
-       * To avoid "Cannot add a Service with the same UUID another Service without also defining a unique 'subtype' property." error,
-       * when creating multiple services of the same type, you need to use the following syntax to specify a name and subtype id:
-       * this.accessory.getService('NAME') || this.accessory.addService(this.platform.Service.Lightbulb, 'NAME', 'USER_DEFINED_SUBTYPE_ID');
-       *
-       * The USER_DEFINED_SUBTYPE must be unique to the platform accessory (if you platform exposes multiple accessories, each accessory
-       * can use the same sub type id.)
-       */
-
-      const contactSensorService = this.accessory.getService('Push Button') ||
-        this.accessory.addService(this.platform.Service.MotionSensor, 'Push Button', 'Push-Button');
-
-      contactSensorService.getCharacteristic(this.platform.Characteristic.ContactSensorState)
-        .onGet(this.getContactSensorState.bind(this));
-
-      var tick = 0;
-      monarco.on('rx', (data) => {
-        tick++;
-
-        if(tick % 32 === 0) {
-          if (this.digitalInput !== 0) {
-            var contactSensorState = data.digitalInputs[this.digitalInput-1] ?
-              this.platform.Characteristic.ContactSensorState.CONTACT_NOT_DETECTED : this.platform.Characteristic.ContactSensorState.CONTACT_DETECTED;
-            this.state.ContactSensorState = contactSensorState;
-            contactSensorService.setCharacteristic(this.platform.Characteristic.ContactSensorState, contactSensorState);
-          }
-        }
-      });
-    }
   }
 
   async setActive(value: CharacteristicValue) {
@@ -163,18 +128,7 @@ export class LunosFanAccessory {
 
     return rotationSpeed;
   }
-
-  async getContactSensorState(): Promise<CharacteristicValue> {
-    const contactSensorState = this.state.ContactSensorState;
-
-    this.platform.log.debug('Get Characteristic ContactSensorState ->', contactSensorState);
-
-    // if you need to return an error to show the device as "Not Responding" in the Home app:
-    // throw new this.platform.api.hap.HapStatusError(this.platform.api.hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE);
-
-    return contactSensorState;
-  }
-
+  
 }
 
 export class ContactSensorAccessory {

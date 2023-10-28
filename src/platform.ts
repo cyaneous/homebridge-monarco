@@ -56,17 +56,21 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
       {
         uniqueId: 'AO1',
         displayName: 'Lunos e2',
-        kind: 'lunos_fan',
+        kind: 'lunosFan',
         model: 'e2',
         analogOutput: 1,
-        digitalInput: 0,
       },
       {
         uniqueId: 'AO2',
         displayName: 'Lunos ego',
-        kind: 'lunos_fan',
+        kind: 'lunosFan',
         model: 'ego',
         analogOutput: 2,
+      },
+           {
+        uniqueId: 'DI2',
+        displayName: 'Bath Fan Button',
+        kind: 'contactSensor',
         digitalInput: 2,
       },
     ];
