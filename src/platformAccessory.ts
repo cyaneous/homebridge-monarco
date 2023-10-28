@@ -119,15 +119,15 @@ export class LunosFanAccessory {
     var v = STAGE_AUTO_V;
     switch (this.model) {
       case 'ego':
-        if (value <== 0) { 
+        if (value <= 0) { 
           v = STAGE_AUTO_V;
-        } else if (value <== 25) {
+        } else if (value <= 25) {
           v = STAGE_2_V;
-        } else if (value <== 50) {
+        } else if (value <= 50) {
          v = STAGE_6_V;
-        } else if (value <== 75) {
+        } else if (value <= 75) {
          v = STAGE_8_V;
-        } else if (value <== 100) {
+        } else if (value <= 100) {
           v = STAGE_8_V + SUMMER_OFFSET_V;
         }
         break;
