@@ -56,6 +56,7 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
       {
         uniqueId: 'AO1',
         displayName: 'Lunos e2',
+        kind: 'lunos_fan',
         model: 'e2',
         analogOutput: 1,
         digitalInput: 0,
@@ -63,7 +64,7 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
       {
         uniqueId: 'AO2',
         displayName: 'Lunos ego',
-        kind: 'lunos_fan'
+        kind: 'lunos_fan',
         model: 'ego',
         analogOutput: 2,
         digitalInput: 2,
