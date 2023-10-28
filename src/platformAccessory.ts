@@ -84,7 +84,7 @@ export class LunosFanAccessory {
 
         if(tick % 32 === 0) {
           if (this.digitalInput !== 0) {
-            var contactSensorState = rxdata.digitalInputs[this.digitalInput-1] ?
+            var contactSensorState = data.digitalInputs[this.digitalInput-1] ?
               this.platform.Characteristic.ContactSensorState.CONTACT_NOT_DETECTED : this.platform.Characteristic.ContactSensorState.CONTACT_DETECTED;
             this.fanState.ContactSensorState = contactSensorState;
             contactSensorService.setCharacteristic(this.platform.Characteristic.ContactSensorState, contactSensorState);
