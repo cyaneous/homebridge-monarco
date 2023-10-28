@@ -57,15 +57,15 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
         uniqueId: 'ABCD',
         displayName: 'Lunos e2',
         model: 'e2',
-        analogOutput: 0,
-        digitalInput: -1,
+        analogOutput: 1,
+        digitalInput: 0,
       },
       {
         uniqueId: 'EFGH',
         displayName: 'Lunos eGO',
         model: 'ego',
-        analogOutput: 1,
-        digitalInput: 1,
+        analogOutput: 2,
+        digitalInput: 2,
       },
     ];
 

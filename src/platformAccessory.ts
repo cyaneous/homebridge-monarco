@@ -60,7 +60,7 @@ export class LunosFanAccessory {
       .setProps({ minStep: 25, minValue: 0, maxValue: 100 })
       .onSet(this.setRotationSpeed.bind(this)); 
 
-    if (this.digitalInput !== -1) {
+    if (this.digitalInput !== 0) {
       /**
        * Creating multiple services of the same type.
        *
@@ -73,7 +73,7 @@ export class LunosFanAccessory {
        */
 
       const contactSensorService = this.accessory.getService('Push Button') ||
-      this.accessory.addService(this.platform.Service.MotionSensor, 'Push Button', 'Push-Button');
+        this.accessory.addService(this.platform.Service.MotionSensor, 'Push Button', 'Push-Button');
 
       contactSensorService.getCharacteristic(this.platform.Characteristic.ContactSensorState)
         .onGet(this.getContactSensorState.bind(this));
@@ -83,8 +83,8 @@ export class LunosFanAccessory {
         tick++;
 
         if(tick % 32 === 0) {
-          if (this.digitalInput !== -1) {
-            var contactSensorState = monarco.digitalInput[this.digitalInput] === 0 ?
+          if (this.digitalInput !== 0) {
+            var contactSensorState = rxdata.digitalInputs[this.digitalInput-1] ?
               this.platform.Characteristic.ContactSensorState.CONTACT_NOT_DETECTED : this.platform.Characteristic.ContactSensorState.CONTACT_DETECTED;
             this.fanState.ContactSensorState = contactSensorState;
             contactSensorService.setCharacteristic(this.platform.Characteristic.ContactSensorState, contactSensorState);
@@ -95,10 +95,10 @@ export class LunosFanAccessory {
   }
 
   async setActive(value: CharacteristicValue) {
+    this.platform.log.debug('Set Characteristic Active ->', value);
+
     // implement your own code to turn your device on/off
     this.fanState.Active = value as boolean;
-
-    this.platform.log.debug('Set Characteristic Active ->', value);
   }
 
   async getActive(): Promise<CharacteristicValue> {
@@ -114,6 +114,7 @@ export class LunosFanAccessory {
   }
 
   async setRotationSpeed(value: CharacteristicValue) {
+    this.platform.log.debug('Set Characteristic RotationSpeed -> ', value);
     this.fanState.RotationSpeed = value as number;
 
     var v = LUNOS_FAN_STAGE_AUTO_V;
@@ -147,9 +148,7 @@ export class LunosFanAccessory {
         break;
     }
 
-    monarco.analogOutputs[this.analogOutput] = v;
-
-    this.platform.log.debug('Set Characteristic RotationSpeed -> ', value);
+    monarco.analogOutputs[this.analogOutput-1] = v;
   }
 
   async getRotationSpeed(): Promise<CharacteristicValue> {
