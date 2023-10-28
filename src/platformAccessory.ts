@@ -5,17 +5,17 @@ import { MonarcoPlatform } from './platform';
 var monarco = require('monarco-hat');
 
 const LUNOS_FAN_V = {
-  AUTO = 0.0; // 0.0 - 0.4
-  STAGE_0 = 0.7; // 0.6 - 0.9
-  STAGE_1 = 1.2; // 1.1 - 1.4
-  STAGE_2 = 1.7; // 1.6 - 1.9
-  STAGE_3 = 2.2; // 2.1 - 2.4
-  STAGE_4 = 2.7; // 2.6 - 2.9
-  STAGE_5 = 3.2; // 3.1 - 3.4
-  STAGE_6 = 3.7; // 3.6 - 3.9
-  STAGE_7 = 4.2; // 4.1 - 4.4
-  STAGE_8 = 4.7; // 4.6 - 4.9
-  SUMMER_OFFSET = 5.0;
+  AUTO: 0.0, // 0.0 - 0.4
+  STAGE_0: 0.7, // 0.6 - 0.9
+  STAGE_1: 1.2, // 1.1 - 1.4
+  STAGE_2: 1.7, // 1.6 - 1.9
+  STAGE_3: 2.2, // 2.1 - 2.4
+  STAGE_4: 2.7, // 2.6 - 2.9
+  STAGE_5: 3.2, // 3.1 - 3.4
+  STAGE_6: 3.7, // 3.6 - 3.9
+  STAGE_7: 4.2, // 4.1 - 4.4
+  STAGE_8: 4.7, // 4.6 - 4.9
+  SUMMER_OFFSET: 5.0,
 };
 
 export class LunosFanAccessory {
