@@ -1,7 +1,7 @@
 import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service, Characteristic } from 'homebridge';
 
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
-import { LunosFanAccessory } from './platformAccessory';
+import { LunosFanAccessory, ContactSensorAccessory } from './platformAccessory';
 
 var monarco = require('monarco-hat');
 
