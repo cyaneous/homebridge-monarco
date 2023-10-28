@@ -4,17 +4,19 @@ import { MonarcoPlatform } from './platform';
 
 var monarco = require('monarco-hat');
 
-const LUNOS_FAN_STAGE_AUTO_V= 0.0; // 0.0 - 0.4
-const LUNOS_FAN_STAGE_0_V= 0.7; // 0.6 - 0.9
-const LUNOS_FAN_STAGE_1_V= 1.2; // 1.1 - 1.4
-const LUNOS_FAN_STAGE_2_V= 1.7; // 1.6 - 1.9
-const LUNOS_FAN_STAGE_3_V= 2.2; // 2.1 - 2.4
-const LUNOS_FAN_STAGE_4_V= 2.7; // 2.6 - 2.9
-const LUNOS_FAN_STAGE_5_V= 3.2; // 3.1 - 3.4
-const LUNOS_FAN_STAGE_6_V= 3.7; // 3.6 - 3.9
-const LUNOS_FAN_STAGE_7_V= 4.2; // 4.1 - 4.4
-const LUNOS_FAN_STAGE_8_V= 4.7; // 4.6 - 4.9
-const LUNOS_FAN_SUMMER_OFFSET_V = 5.0;
+const LUNOS_FAN_V = {
+  AUTO = 0.0; // 0.0 - 0.4
+  STAGE_0 = 0.7; // 0.6 - 0.9
+  STAGE_1 = 1.2; // 1.1 - 1.4
+  STAGE_2 = 1.7; // 1.6 - 1.9
+  STAGE_3 = 2.2; // 2.1 - 2.4
+  STAGE_4 = 2.7; // 2.6 - 2.9
+  STAGE_5 = 3.2; // 3.1 - 3.4
+  STAGE_6 = 3.7; // 3.6 - 3.9
+  STAGE_7 = 4.2; // 4.1 - 4.4
+  STAGE_8 = 4.7; // 4.6 - 4.9
+  SUMMER_OFFSET = 5.0;
+};
 
 export class LunosFanAccessory {
   private service: Service;
@@ -117,33 +119,33 @@ export class LunosFanAccessory {
     this.platform.log.debug('Set Characteristic RotationSpeed -> ', value);
     this.fanState.RotationSpeed = value as number;
 
-    var v = LUNOS_FAN_STAGE_AUTO_V;
+    var v = LUNOS_FAN_V.AUTO;
     switch (this.model) {
       case 'ego':
         if (value <= 0) { 
-          v = LUNOS_FAN_STAGE_AUTO_V;
+          v = LUNOS_FAN_V.AUTO;
         } else if (value <= 25) {
-          v = LUNOS_FAN_STAGE_2_V;
+          v = LUNOS_FAN_V.STAGE_2;
         } else if (value <= 50) {
-         v = LUNOS_FAN_STAGE_6_V;
+         v = LUNOS_FAN_V.STAGE_6;
         } else if (value <= 75) {
-         v = LUNOS_FAN_STAGE_8_V;
+         v = LUNOS_FAN_V.STAGE_8;
         } else if (value <= 100) {
-          v = LUNOS_FAN_STAGE_8_V + LUNOS_FAN_SUMMER_OFFSET_V;
+          v = LUNOS_FAN_V.STAGE_8 + LUNOS_FAN_V.SUMMER_OFFSET;
         }
         break;
 
       case 'e2':
         if (value <= 0) {
-          v = LUNOS_FAN_STAGE_AUTO_V;
+          v = LUNOS_FAN_V.AUTO;
         } else if (value <= 25) {
-          v = LUNOS_FAN_STAGE_2_V;
+          v = LUNOS_FAN_V.STAGE_2;
         } else if (value <= 50) {
-          v = LUNOS_FAN_STAGE_4_V;
+          v = LUNOS_FAN_V.STAGE_4;
         } else if (value <= 75) {
-          v = LUNOS_FAN_STAGE_6_V;
+          v = LUNOS_FAN_V.STAGE_6;
         } else if (value <= 100) {
-          v = LUNOS_FAN_STAGE_8_V;
+          v = LUNOS_FAN_V.STAGE_8;
         }
         break;
     }

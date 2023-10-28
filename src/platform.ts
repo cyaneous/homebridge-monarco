@@ -52,17 +52,18 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
   }
 
   configureDevices() {
-    const exampleDevices = [
+    const devices = [
       {
-        uniqueId: 'ABCD',
+        uniqueId: 'AO1',
         displayName: 'Lunos e2',
         model: 'e2',
         analogOutput: 1,
         digitalInput: 0,
       },
       {
-        uniqueId: 'EFGH',
-        displayName: 'Lunos eGO',
+        uniqueId: 'AO2',
+        displayName: 'Lunos ego',
+        kind: 'lunos_fan'
         model: 'ego',
         analogOutput: 2,
         digitalInput: 2,
@@ -70,7 +71,7 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
     ];
 
     // loop over the discovered devices and register each one if it has not already been registered
-    for (const device of exampleDevices) {
+    for (const device of devices) {
 
       // generate a unique id for the accessory this should be generated from
       // something globally unique, but constant, for example, the device serial
