@@ -5,8 +5,8 @@ import { MonarcoPlatform } from './platform';
 var monarco = require('monarco-hat');
 
 const LUNOS_FAN_V = {
-  AUTO: 0.0, // 0.0 - 0.4
-  STAGE_0: 0.7, // 0.6 - 0.9
+  AUTO: 0.0, // 0.0 - 0.4 (managed by Lunos controller)
+  STAGE_0: 0.7, // 0.6 - 0.9 (off)
   STAGE_1: 1.2, // 1.1 - 1.4
   STAGE_2: 1.7, // 1.6 - 1.9
   STAGE_3: 2.2, // 2.1 - 2.4
@@ -24,7 +24,7 @@ export class LunosFanAccessory {
   private analogOutput: number;
   private digitalInput: number;
 
-  private fanState = {
+  private state = {
     Active: false,
     RotationSpeed: 0,
     ContactSensorState: 0,
@@ -88,7 +88,7 @@ export class LunosFanAccessory {
           if (this.digitalInput !== 0) {
             var contactSensorState = data.digitalInputs[this.digitalInput-1] ?
               this.platform.Characteristic.ContactSensorState.CONTACT_NOT_DETECTED : this.platform.Characteristic.ContactSensorState.CONTACT_DETECTED;
-            this.fanState.ContactSensorState = contactSensorState;
+            this.state.ContactSensorState = contactSensorState;
             contactSensorService.setCharacteristic(this.platform.Characteristic.ContactSensorState, contactSensorState);
           }
         }
@@ -100,12 +100,12 @@ export class LunosFanAccessory {
     this.platform.log.debug('Set Characteristic Active ->', value);
 
     // implement your own code to turn your device on/off
-    this.fanState.Active = value as boolean;
+    this.state.Active = value as boolean;
   }
 
   async getActive(): Promise<CharacteristicValue> {
     // implement your own code to check if the device is on
-    const active = this.fanState.Active;
+    const active = this.state.Active;
 
     this.platform.log.debug('Get Characteristic Active ->', active);
 
@@ -117,7 +117,7 @@ export class LunosFanAccessory {
 
   async setRotationSpeed(value: CharacteristicValue) {
     this.platform.log.debug('Set Characteristic RotationSpeed -> ', value);
-    this.fanState.RotationSpeed = value as number;
+    this.state.RotationSpeed = value as number;
 
     var v = LUNOS_FAN_V.AUTO;
     switch (this.model) {
@@ -154,7 +154,7 @@ export class LunosFanAccessory {
   }
 
   async getRotationSpeed(): Promise<CharacteristicValue> {
-    const rotationSpeed = this.fanState.RotationSpeed;
+    const rotationSpeed = this.state.RotationSpeed;
 
     this.platform.log.debug('Get Characteristic RotationSpeed ->', rotationSpeed);
 
@@ -165,7 +165,67 @@ export class LunosFanAccessory {
   }
 
   async getContactSensorState(): Promise<CharacteristicValue> {
-    const contactSensorState = this.fanState.ContactSensorState;
+    const contactSensorState = this.state.ContactSensorState;
+
+    this.platform.log.debug('Get Characteristic ContactSensorState ->', contactSensorState);
+
+    // if you need to return an error to show the device as "Not Responding" in the Home app:
+    // throw new this.platform.api.hap.HapStatusError(this.platform.api.hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE);
+
+    return contactSensorState;
+  }
+
+}
+
+export class ContactSensorAccessory {
+  private service: Service;
+  private digitalInput: number;
+
+  private state = {
+    ContactSensorState: 0,
+  };
+
+  constructor(
+    private readonly platform: MonarcoPlatform,
+    private readonly accessory: PlatformAccessory,
+  ) {
+    this.digitalInput = accessory.context.device.digitalInput;
+
+    // set accessory information
+    this.accessory.getService(this.platform.Service.AccessoryInformation)!
+      .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Monarco')
+      .setCharacteristic(this.platform.Characteristic.Model, this.model)
+      .setCharacteristic(this.platform.Characteristic.SerialNumber, 'Not Available');
+
+    // get the ContactSensor service if it exists, otherwise create a new ContactSensor service
+    // you can create multiple services for each accessory
+    this.service = this.accessory.getService(this.platform.Service.ContactSensor) || this.accessory.addService(this.platform.Service.ContactSensor);
+
+    // set the service name, this is what is displayed as the default name on the Home app
+    // in this example we are using the name we stored in the `accessory.context` in the `discoverDevices` method.
+    this.service.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.displayName);
+
+    // register handlers for the Active Characteristic
+    this.service.getCharacteristic(this.platform.Characteristic.ContactSensorState)
+      .onGet(this.getContactSensorState.bind(this));
+
+    var tick = 0;
+    monarco.on('rx', (data) => {
+      tick++;
+
+      if(tick % 32 === 0) {
+        if (this.digitalInput >= 1 && this.digitalInput <= 4) {
+          var contactSensorState = data.digitalInputs[this.digitalInput-1] ?
+            this.platform.Characteristic.ContactSensorState.CONTACT_NOT_DETECTED : this.platform.Characteristic.ContactSensorState.CONTACT_DETECTED;
+          this.state.ContactSensorState = contactSensorState;
+          this.service.setCharacteristic(this.platform.Characteristic.ContactSensorState, contactSensorState);
+        }
+      }
+    });
+  }
+
+  async getContactSensorState(): Promise<CharacteristicValue> {
+    const contactSensorState = this.state.ContactSensorState;
 
     this.platform.log.debug('Get Characteristic ContactSensorState ->', contactSensorState);
 
