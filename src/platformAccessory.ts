@@ -194,7 +194,7 @@ export class ContactSensorAccessory {
     // set accessory information
     this.accessory.getService(this.platform.Service.AccessoryInformation)!
       .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Monarco')
-      .setCharacteristic(this.platform.Characteristic.Model, this.model)
+      .setCharacteristic(this.platform.Characteristic.Model, 'Contact Sensor')
       .setCharacteristic(this.platform.Characteristic.SerialNumber, 'Not Available');
 
     // get the ContactSensor service if it exists, otherwise create a new ContactSensor service
