@@ -3,7 +3,7 @@ import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, 
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
 import { LunosFanAccessory } from './platformAccessory';
 
-import { monarco } from 'monarco-hat';
+var monarco = require('monarco-hat');
 
 /**
  * HomebridgePlatform

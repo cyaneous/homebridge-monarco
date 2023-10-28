@@ -2,7 +2,7 @@ import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
 
 import { MonarcoPlatform } from './platform';
 
-import { monarco } from 'monarco-hat';
+var monarco = require('monarco-hat');
 
 const LUNOS_FAN_STAGE_AUTO_V= 0.0; // 0.0 - 0.4
 const LUNOS_FAN_STAGE_0_V= 0.7; // 0.6 - 0.9
