@@ -77,7 +77,6 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
 
     // loop over the discovered devices and register each one if it has not already been registered
     for (const device of devices) {
-
       // generate a unique id for the accessory this should be generated from
       // something globally unique, but constant, for example, the device serial
       // number or MAC address
@@ -97,7 +96,16 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
 
         // create the accessory handler for the restored accessory
         // this is imported from `platformAccessory.ts`
-        new LunosFanAccessory(this, existingAccessory);
+        switch (device.kind) {
+        case 'lunosFan':
+          new LunosFanAccessory(this, existingAccessory);
+          break;
+        case 'contactSensor':
+          new ContactSensorAccessory(this, existingAccessory);
+          break;
+        default:
+          this.log.error('Invalid device kind:' + device.kind);
+        }
 
         // it is possible to remove platform accessories at any time using `api.unregisterPlatformAccessories`, eg.:
         // remove platform accessories when no longer present
@@ -116,7 +124,16 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
 
         // create the accessory handler for the newly create accessory
         // this is imported from `platformAccessory.ts`
-        new LunosFanAccessory(this, accessory);
+        switch (device.kind) {
+        case 'lunosFan':
+          new LunosFanAccessory(this, accessory);
+          break;
+        case 'contactSensor':
+          new ContactSensorAccessory(this, accessory);
+          break;
+        default:
+          this.log.error('Invalid device kind:' + device.kind);
+        }
 
         // link the accessory to your platform
         this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
