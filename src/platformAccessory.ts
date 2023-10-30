@@ -20,8 +20,9 @@ const LUNOS_FAN_V = {
 
 export class LunosFanAccessory {
   private service: Service;
-  private model: string;
+  private kind: string;
   private analogOutput: number;
+  private model: string;
 
   private state = {
     Active: false,
@@ -33,8 +34,14 @@ export class LunosFanAccessory {
     private readonly platform: MonarcoPlatform,
     private readonly accessory: PlatformAccessory,
   ) {
-    this.model = accessory.context.device.model;
+    this.kind = accessory.context.device.kind;
     this.analogOutput = accessory.context.device.analogOutput;
+
+    switch (this.kind) {
+      case 'lunosE2': this.model = 'Lunos e2';
+      case 'lunosEgo': this.model = 'Lunos ego';
+      default: this.model = 'Unknown';
+    }
 
     // set accessory information
     this.accessory.getService(this.platform.Service.AccessoryInformation)!
@@ -85,22 +92,8 @@ export class LunosFanAccessory {
     this.state.RotationSpeed = value as number;
 
     var v = LUNOS_FAN_V.AUTO;
-    switch (this.model) {
-      case 'ego':
-        if (value <= 0) { 
-          v = LUNOS_FAN_V.AUTO;
-        } else if (value <= 25) {
-          v = LUNOS_FAN_V.STAGE_2;
-        } else if (value <= 50) {
-         v = LUNOS_FAN_V.STAGE_6;
-        } else if (value <= 75) {
-         v = LUNOS_FAN_V.STAGE_8;
-        } else if (value <= 100) {
-          v = LUNOS_FAN_V.STAGE_8 + LUNOS_FAN_V.SUMMER_OFFSET;
-        }
-        break;
-
-      case 'e2':
+    switch (this.kind) {
+      case 'lunosE2':
         if (value <= 0) {
           v = LUNOS_FAN_V.AUTO;
         } else if (value <= 25) {
@@ -113,6 +106,21 @@ export class LunosFanAccessory {
           v = LUNOS_FAN_V.STAGE_8;
         }
         break;
+      case 'lunosEgo':
+        if (value <= 0) { 
+          v = LUNOS_FAN_V.AUTO;
+        } else if (value <= 25) {
+          v = LUNOS_FAN_V.STAGE_2;
+        } else if (value <= 50) {
+         v = LUNOS_FAN_V.STAGE_6;
+        } else if (value <= 75) {
+         v = LUNOS_FAN_V.STAGE_8;
+        } else if (value <= 100) {
+          v = LUNOS_FAN_V.STAGE_8 + LUNOS_FAN_V.SUMMER_OFFSET;
+        }
+        break;
+      default:
+        this.platform.log.error('Unexpected Lunos fan kind:', this.kind);
     }
 
     monarco.analogOutputs[this.analogOutput-1] = v;
@@ -128,7 +136,7 @@ export class LunosFanAccessory {
 
     return rotationSpeed;
   }
-  
+
 }
 
 export class ContactSensorAccessory {
