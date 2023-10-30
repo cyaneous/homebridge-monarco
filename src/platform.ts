@@ -62,20 +62,20 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
     const devices = [
       {
         uniqueId: 'AO1',
-        kind: 'lunosFan',
-        name: 'Lunos e2',
+        kind: 'lunosE2',
+        name: 'HRV',
         analogOutput: 1,
       },
       {
         uniqueId: 'AO2',
-        kind: 'lunosFan',
-        name: 'Lunos ego',
+        kind: 'lunosEgo',
+        name: 'Bath HRV',
         analogOutput: 2,
       },
            {
         uniqueId: 'DI2',
         kind: 'contactSensor',
-        name: 'Bath Fan Button',
+        name: 'Bath HRV Button',
         digitalInput: 2,
       },
     ];
