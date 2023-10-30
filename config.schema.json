@@ -61,7 +61,7 @@
               "minimum": 1,
               "maximum": 4,
               "condition": {
-                "functionBody": "return arrayIndices !== null && model.devices[arrayIndices].kind === 'contactSensor';"
+                "functionBody": "return arrayIndices !== null && ['contactSensor'].includes(model.devices[arrayIndices].kind);;"
               }
             },
             "digitalOutput": {
@@ -73,7 +73,7 @@
               "minimum": 1,
               "maximum": 4,
               "condition": {
-                "functionBody": "return arrayIndices !== null && model.devices[arrayIndices].kind === 'unused';"
+                "functionBody": "return arrayIndices !== null && [].includes(model.devices[arrayIndices].kind);"
               }
             },
             "analogInput": {
@@ -85,7 +85,7 @@
               "minimum": 1,
               "maximum": 2,
               "condition": {
-                "functionBody": "return arrayIndices !== null && model.devices[arrayIndices].kind === 'unused';"
+                "functionBody": "return arrayIndices !== null && [].includes(model.devices[arrayIndices].kind);"
               }
             },
             "analogOutput": {
