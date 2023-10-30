@@ -62,22 +62,20 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
     const devices = [
       {
         uniqueId: 'AO1',
-        displayName: 'Lunos e2',
         kind: 'lunosFan',
-        model: 'e2',
+        name: 'Lunos e2',
         analogOutput: 1,
       },
       {
         uniqueId: 'AO2',
-        displayName: 'Lunos ego',
         kind: 'lunosFan',
-        model: 'ego',
+        name: 'Lunos ego',
         analogOutput: 2,
       },
            {
         uniqueId: 'DI2',
-        displayName: 'Bath Fan Button',
         kind: 'contactSensor',
+        name: 'Bath Fan Button',
         digitalInput: 2,
       },
     ];
@@ -111,10 +109,10 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
         // this.log.info('Removing existing accessory from cache:', existingAccessory.displayName);
       } else {
         // the accessory does not yet exist, so we need to create it
-        this.log.info('Adding new accessory:', device.displayName);
+        this.log.info('Adding new accessory:', device.name);
 
         // create a new accessory
-        const accessory = new this.api.platformAccessory(device.displayName, uuid);
+        const accessory = new this.api.platformAccessory(device.name, uuid);
 
         // store a copy of the device object in the `accessory.context`
         // the `context` property can be used to store any data about the accessory you may need
