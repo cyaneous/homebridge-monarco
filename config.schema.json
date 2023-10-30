@@ -20,9 +20,9 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "device": {
-              "title": "Device",
-              "description": "The type of device connected.",
+            "kind": {
+              "title": "Kind",
+              "description": "The kind of device connected.",
               "type": "string",
               "required": true,
               "oneOf": [
@@ -42,14 +42,52 @@
             },
             "name": {
               "title": "Name",
-              "description": "The HomeKit name of the device.",
+              "description": "The HomeKit name of this device.",
               "type": "string"
             },
-            "gpio": {
-              "title": "GPIO",
-              "description": "The BCM number of the GPIO pin.<br>For devices: Button, Carbon Monoxide Sensor, Contact Sensor, DHTxx Sensor, Door Bell, Garage Door Opener, Leak Sensor, Light, Motion Sensor, Rocker, Servo Motor, Smoke Sensor, Switch.",
+            "digitalInput": {
+              "title": "Digital Input",
+              "description": "The digital input used for this device.",
               "type": "integer",
-              "maximum": 31
+              "required": true,
+              "minimum": 0,
+              "maximum": 4,
+              "condition": {
+                "functionBody": "return model.kind === 'contactSensor';"
+              }
+            }
+            "digitalOutput": {
+              "title": "Digital Output",
+              "description": "The digital output used for this device.",
+              "type": "integer",
+              "required": true,
+              "minimum": 0,
+              "maximum": 4,
+              "condition": {
+                "functionBody": "return model.kind === 'unused';"
+              }
+            }
+            "analogInput": {
+              "title": "Analog Input",
+              "description": "The analog input used for this device.",
+              "type": "integer",
+              "required": true,
+              "minimum": 0,
+              "maximum": 2,
+              "condition": {
+                "functionBody": "return model.kind === 'unused';"
+              }
+            }
+            "analogOutput": {
+              "title": "Analog Output",
+              "description": "The analog output used for this device.",
+              "type": "integer",
+              "required": true,
+              "minimum": 0,
+              "maximum": 2,
+              "condition": {
+                "functionBody": "return model.kind === 'lunosFan';"
+              }
             }
           }
         }
