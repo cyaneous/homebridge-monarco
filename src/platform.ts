@@ -31,7 +31,7 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
     this.api.on('didFinishLaunching', () => {
       log.debug('Executed didFinishLaunching callback');
       try {
-        this.platform.log.debug('Initializing Monarco HAT...');
+        this.log.debug('Initializing Monarco HAT...');
 
         monarco.on('err', (err, msg) => {
           this.log.error('Error:' + err);
@@ -41,7 +41,7 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
           this.configureDevices();
         });
       } catch (error) {
-        this.platform.log.error('Init failed:', error);
+        this.log.error('Init failed:', error);
         return;
       }
     });
