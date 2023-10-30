@@ -34,9 +34,15 @@
                   ]
                 },
                 {
-                  "title": "Lunos Fan",
+                  "title": "Lunos e2",
                   "enum": [
-                    "lunosFan"
+                    "lunosE2"
+                  ]
+                },
+                {
+                  "title": "Lunos ego",
+                  "enum": [
+                    "lunosEgo"
                   ]
                 }
               ]
@@ -91,7 +97,7 @@
               "minimum": 1,
               "maximum": 2,
               "condition": {
-                "functionBody": "return arrayIndices !== null && model.devices[arrayIndices].kind === 'lunosFan';"
+                "functionBody": "return arrayIndices !== null && ['lunosE2', 'lunosEgo'].Includes(model.devices[arrayIndices].kind);"
               }
             }
           }
