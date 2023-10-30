@@ -25,7 +25,7 @@
               "description": "The kind of device connected.",
               "type": "string",
               "required": true,
-              "placeholder": "contactSensor",
+              "default": "contactSensor",
               "oneOf": [
                 {
                   "title": "Contact Sensor",
@@ -51,10 +51,11 @@
               "description": "The digital input used for this device.",
               "type": "integer",
               "required": true,
-              "minimum": 0,
+              "default": 1,
+              "minimum": 1,
               "maximum": 4,
               "condition": {
-                "functionBody": "return model.devices[arrayIndices].kind === 'contactSensor';"
+                "functionBody": "return arrayIndices !== null && model.devices[arrayIndices].kind === 'contactSensor';"
               }
             },
             "digitalOutput": {
@@ -62,10 +63,11 @@
               "description": "The digital output used for this device.",
               "type": "integer",
               "required": true,
-              "minimum": 0,
+              "default": 1,
+              "minimum": 1,
               "maximum": 4,
               "condition": {
-                "functionBody": "return model.devices[arrayIndices].kind === 'unused';"
+                "functionBody": "return arrayIndices !== null && model.devices[arrayIndices].kind === 'unused';"
               }
             },
             "analogInput": {
@@ -73,10 +75,11 @@
               "description": "The analog input used for this device.",
               "type": "integer",
               "required": true,
-              "minimum": 0,
+              "default": 1,
+              "minimum": 1,
               "maximum": 2,
               "condition": {
-                "functionBody": "return model.devices[arrayIndices].kind === 'unused';"
+                "functionBody": "return arrayIndices !== null && model.devices[arrayIndices].kind === 'unused';"
               }
             },
             "analogOutput": {
@@ -84,10 +87,11 @@
               "description": "The analog output used for this device.",
               "type": "integer",
               "required": true,
-              "minimum": 0,
+              "default": 1,
+              "minimum": 1,
               "maximum": 2,
               "condition": {
-                "functionBody": "return model.devices[arrayIndices].kind === 'lunosFan';"
+                "functionBody": "return arrayIndices !== null && model.devices[arrayIndices].kind === 'lunosFan';"
               }
             }
           }
