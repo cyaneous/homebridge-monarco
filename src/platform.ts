@@ -38,7 +38,7 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
         });
 
         // monarco.init().then(() => {
-          this.configureDevices();
+          this.configureDevices(config);
         // });
       } catch (error) {
         this.log.error('Init failed:', error);
@@ -58,7 +58,7 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
     this.accessories.push(accessory);
   }
 
-  configureDevices() {
+  configureDevices(config) {
     const devices = [
       {
         uniqueId: 'AO1',
