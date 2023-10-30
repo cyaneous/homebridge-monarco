@@ -50,7 +50,8 @@
             "name": {
               "title": "Name",
               "description": "The HomeKit name of this device.",
-              "type": "string"
+              "type": "string",
+              "required": true
             },
             "digitalInput": {
               "title": "Digital Input",
