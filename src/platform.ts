@@ -134,8 +134,11 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
     switch (device.kind) {
       case 'contactSensor':
         new ContactSensorAccessory(this, accessory);
-      case 'lunosE2', case 'lunosEgo':
+        break;
+      case 'lunosE2':
+      case 'lunosEgo':
         new LunosFanAccessory(this, accessory);
+        break;
       default:
         this.log.error('Invalid device kind:' + device.kind);
     }
