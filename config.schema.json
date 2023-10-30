@@ -10,6 +10,49 @@
         "type": "string",
         "required": true,
         "default": "Monarco"
+      },
+      "devices": {
+        "title": "Devices",
+        "notitle": true,
+        "type": "array",
+        "items": {
+          "description": "<b>Device</b>",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "device": {
+              "title": "Device",
+              "description": "The type of device connected.",
+              "type": "string",
+              "required": true,
+              "oneOf": [
+                {
+                  "title": "Lunos Fan",
+                  "enum": [
+                    "lunosFan"
+                  ]
+                },
+                {
+                  "title": "Contact Sensor",
+                  "enum": [
+                    "contactSensor"
+                  ]
+                },
+              ]
+            },
+            "name": {
+              "title": "Name",
+              "description": "The HomeKit name of the device.",
+              "type": "string"
+            },
+            "gpio": {
+              "title": "GPIO",
+              "description": "The BCM number of the GPIO pin.<br>For devices: Button, Carbon Monoxide Sensor, Contact Sensor, DHTxx Sensor, Door Bell, Garage Door Opener, Leak Sensor, Light, Motion Sensor, Rocker, Servo Motor, Smoke Sensor, Switch.",
+              "type": "integer",
+              "maximum": 31
+            }
+          }
+        }
       }
     }
   }
