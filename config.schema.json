@@ -53,7 +53,7 @@
               "minimum": 0,
               "maximum": 4,
               "condition": {
-                "functionBody": "return model.kind === 'contactSensor';"
+                "functionBody": "return arrayIndices.kind === 'contactSensor';"
               }
             },
             "digitalOutput": {
@@ -64,7 +64,7 @@
               "minimum": 0,
               "maximum": 4,
               "condition": {
-                "functionBody": "return model.kind === 'unused';"
+                "functionBody": "return arrayIndices.kind === 'unused';"
               }
             },
             "analogInput": {
@@ -75,7 +75,7 @@
               "minimum": 0,
               "maximum": 2,
               "condition": {
-                "functionBody": "return model.kind === 'unused';"
+                "functionBody": "return arrayIndices.kind === 'unused';"
               }
             },
             "analogOutput": {
@@ -86,7 +86,7 @@
               "minimum": 0,
               "maximum": 2,
               "condition": {
-                "functionBody": "return model.kind === 'lunosFan';"
+                "functionBody": "return arrayIndices.kind === 'lunosFan';"
               }
             }
           }
