@@ -25,17 +25,18 @@
               "description": "The kind of device connected.",
               "type": "string",
               "required": true,
+              "placeholder": "contactSensor",
               "oneOf": [
-                {
-                  "title": "Lunos Fan",
-                  "enum": [
-                    "lunosFan"
-                  ]
-                },
                 {
                   "title": "Contact Sensor",
                   "enum": [
                     "contactSensor"
+                  ]
+                },
+                {
+                  "title": "Lunos Fan",
+                  "enum": [
+                    "lunosFan"
                   ]
                 }
               ]
