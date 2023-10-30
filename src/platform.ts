@@ -59,29 +59,8 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
   }
 
   configureDevices(config) {
-    const devices = [
-      {
-        uniqueId: 'AO1',
-        kind: 'lunosE2',
-        name: 'HRV',
-        analogOutput: 1,
-      },
-      {
-        uniqueId: 'AO2',
-        kind: 'lunosEgo',
-        name: 'Bath HRV',
-        analogOutput: 2,
-      },
-           {
-        uniqueId: 'DI2',
-        kind: 'contactSensor',
-        name: 'Bath HRV Button',
-        digitalInput: 2,
-      },
-    ];
-
     // loop over the discovered devices and register each one if it has not already been registered
-    for (const device of devices) {
+    for (const device of config.devices) {
       // generate a unique id for the accessory this should be generated from
       // something globally unique, but constant, for example, the device serial
       // number or MAC address
