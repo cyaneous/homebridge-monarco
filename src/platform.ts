@@ -37,9 +37,9 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
           this.log.error('Error:' + err);
         });
 
-        monarco.init().then(() => {
+        // monarco.init().then(() => {
           this.configureDevices();
-        });
+        // });
       } catch (error) {
         this.log.error('Init failed:', error);
         return;
