@@ -22,7 +22,7 @@
       },
       "devices": {
         "title": "Devices",
-        "notitle": true,
+        "notitle": false,
         "type": "array",
         "items": {
           "description": "<b>Device</b>",
