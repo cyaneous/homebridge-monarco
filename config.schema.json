@@ -25,7 +25,7 @@
         "notitle": false,
         "type": "array",
         "items": {
-          "description": "<h4>Device</h4>",
+          "description": "Device",
           "type": "object",
           "additionalProperties": false,
           "properties": {
@@ -74,18 +74,6 @@
                 "functionBody": "return arrayIndices !== null && ['contactSensor'].includes(model.devices[arrayIndices].kind);;"
               }
             },
-            "digitalOutput": {
-              "title": "Digital Output",
-              "description": "The digital output used for this device.",
-              "type": "integer",
-              "required": true,
-              "default": 1,
-              "minimum": 1,
-              "maximum": 4,
-              "condition": {
-                "functionBody": "return arrayIndices !== null && [].includes(model.devices[arrayIndices].kind);"
-              }
-            },
             "analogInput": {
               "title": "Analog Input",
               "description": "The analog input used for this device.",
@@ -94,6 +82,18 @@
               "default": 1,
               "minimum": 1,
               "maximum": 2,
+              "condition": {
+                "functionBody": "return arrayIndices !== null && [].includes(model.devices[arrayIndices].kind);"
+              }
+            },
+            "digitalOutput": {
+              "title": "Digital Output",
+              "description": "The digital output used for this device.",
+              "type": "integer",
+              "required": true,
+              "default": 1,
+              "minimum": 1,
+              "maximum": 4,
               "condition": {
                 "functionBody": "return arrayIndices !== null && [].includes(model.devices[arrayIndices].kind);"
               }
@@ -114,5 +114,74 @@
         }
       }
     }
-  }
+  },
+  "layout": [
+    {
+      "type": "flex",
+      "flex-flow": "row wrap",
+      "items": [
+        {
+          "type": "flex",
+          "flex-flow": "column",
+          "items": [
+            "name",
+            "watchdogTimeout"
+          ]
+        },
+        {
+          "type": "flex",
+          "flex-flow": "column",
+          "items": [
+            "name",
+            "name"
+          ]
+        }
+      ]
+    },
+   {
+      "type": "fieldset",
+      "title": "Devices",
+      "expandable": true,
+      "expanded": true,
+      "items": [
+        {
+          "title": "Device",
+          "key": "devices",
+          "type": "array",
+          "notitle": true,
+          "items": [
+            {
+              "type": "div",
+              "items": [
+                {
+                  "key": "devices[].kind",
+                  "title": "Kind",
+                },
+                {
+                  "key": "managedDevices[].name",
+                  "title": "Name",
+                },
+                {
+                  "key": "devices[].digitalInput",
+                  "title": "Digital Input",
+                },
+                {
+                  "key": "devices[].analogInput",
+                  "title": "Analog Input",
+                },
+                {
+                  "key": "devices[].digitalOutput",
+                  "title": "Digital Output",
+                },
+                {
+                  "key": "devices[].analogOutput",
+                  "title": "Analog Output",
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
