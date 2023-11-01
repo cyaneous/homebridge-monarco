@@ -166,8 +166,8 @@ export class ContactSensorAccessory {
 
     // get the ContactSensor service if it exists, otherwise create a new ContactSensor service
     // you can create multiple services for each accessory
-    this.service = this.accessory.getService(this.platform.Service.ContactSensor) 
-      || this.accessory.addService(this.platform.Service.ContactSensor);
+    this.service = this.accessory.getService(this.platform.Service.ContactSensor) ||
+      this.accessory.addService(this.platform.Service.ContactSensor);
 
     // set the service name, this is what is displayed as the default name on the Home app
     // in this example we are using the name we stored in the `accessory.context` in the `discoverDevices` method.
