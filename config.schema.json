@@ -130,8 +130,7 @@
           "type": "flex",
           "flex-flow": "column",
           "items": [
-            "name",
-            "watchdogTimeout"
+            "name"
           ]
         }
       ]
@@ -152,37 +151,39 @@
               "type": "div",
               "items": [
                 {
-                  "key": "devices[].id",
-                  "title": "ID"
+                  "key": "devices[].id"
                 },
                 {
-                  "key": "devices[].name",
-                  "title": "Name"
+                  "key": "devices[].name"
                 },
                 {
-                  "key": "devices[].kind",
-                  "title": "Kind"
+                  "key": "devices[].kind"
                 },
                 {
-                  "key": "devices[].digitalInput",
-                  "title": "Digital Input"
+                  "key": "devices[].digitalInput"
                 },
                 {
-                  "key": "devices[].analogInput",
-                  "title": "Analog Input"
+                  "key": "devices[].analogInput"
                 },
                 {
-                  "key": "devices[].digitalOutput",
-                  "title": "Digital Output"
+                  "key": "devices[].digitalOutput"
                 },
                 {
-                  "key": "devices[].analogOutput",
-                  "title": "Analog Output"
+                  "key": "devices[].analogOutput"
                 }
               ]
             }
           ]
         }
+      ]
+    },
+    {
+      "type": "fieldset",
+      "title": "Advanced",
+      "expandable": true,
+      "expanded": false,
+      "items": [
+        "watchdogTimeout"
       ]
     }
   ]
