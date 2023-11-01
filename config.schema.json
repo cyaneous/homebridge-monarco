@@ -29,7 +29,13 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
-              "name": {
+            "id": {
+              "title": "ID",
+              "description": "A unique ID string used to keep track of this device.",
+              "type": "string",
+              "required": true
+            },
+            "name": {
               "title": "Name",
               "description": "The HomeKit name of this device.",
               "type": "string",
@@ -145,6 +151,10 @@
             {
               "type": "div",
               "items": [
+                {
+                  "key": "devices[].id",
+                  "title": "ID"
+                },
                 {
                   "key": "devices[].name",
                   "title": "Name"
