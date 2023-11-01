@@ -25,7 +25,7 @@
         "notitle": false,
         "type": "array",
         "items": {
-          "description": "<h2>Device</h2>",
+          "description": "<h3>Device</h3>",
           "type": "object",
           "additionalProperties": false,
           "properties": {
