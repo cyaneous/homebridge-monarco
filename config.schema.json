@@ -29,6 +29,12 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
+              "name": {
+              "title": "Name",
+              "description": "The HomeKit name of this device.",
+              "type": "string",
+              "required": true
+            },
             "kind": {
               "title": "Kind",
               "description": "The kind of device connected.",
@@ -56,18 +62,12 @@
                 }
               ]
             },
-            "name": {
-              "title": "Name",
-              "description": "The HomeKit name of this device.",
-              "type": "string",
-              "required": true
-            },
             "digitalInput": {
               "title": "Digital Input",
               "description": "The digital input used for this device.",
               "type": "integer",
-              "required": true,
-              "default": 1,
+              "required": false,
+              "placeholder": 0,
               "minimum": 1,
               "maximum": 4,
               "condition": {
@@ -78,8 +78,8 @@
               "title": "Analog Input",
               "description": "The analog input used for this device.",
               "type": "integer",
-              "required": true,
-              "default": 1,
+              "required": false,
+              "placeholder": 0,
               "minimum": 1,
               "maximum": 2,
               "condition": {
@@ -90,8 +90,8 @@
               "title": "Digital Output",
               "description": "The digital output used for this device.",
               "type": "integer",
-              "required": true,
-              "default": 1,
+              "required": false,
+              "placeholder": 0,
               "minimum": 1,
               "maximum": 4,
               "condition": {
@@ -102,8 +102,8 @@
               "title": "Analog Output",
               "description": "The analog output used for this device.",
               "type": "integer",
-              "required": true,
-              "default": 1,
+              "required": false,
+              "placeholder": 0,
               "minimum": 1,
               "maximum": 2,
               "condition": {
@@ -127,14 +127,6 @@
             "name",
             "watchdogTimeout"
           ]
-        },
-        {
-          "type": "flex",
-          "flex-flow": "column",
-          "items": [
-            "name",
-            "name"
-          ]
         }
       ]
     },
@@ -154,12 +146,12 @@
               "type": "div",
               "items": [
                 {
-                  "key": "devices[].kind",
-                  "title": "Kind"
+                  "key": "devices[].name",
+                  "title": "Name"
                 },
                 {
-                  "key": "managedDevices[].name",
-                  "title": "Name"
+                  "key": "devices[].kind",
+                  "title": "Kind"
                 },
                 {
                   "key": "devices[].digitalInput",
