@@ -13,12 +13,12 @@
       },
       "watchdogTimeout": {
         "title": "Watchdog Timeout",
-        "description": "The Raspberry Pi will be rebooted by the watchdog after this many seconds of timeout.",
+        "description": "The Raspberry Pi will be power-cycled by the watchdog after this many seconds of timeout.",
         "type": "integer",
         "required": true,
         "default": 1,
         "minimum": 1,
-        "maximum": 300,
+        "maximum": 300
       },
       "devices": {
         "title": "Devices",
