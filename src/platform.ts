@@ -1,3 +1,6 @@
+// https://github.com/monarco/monarco-hat-driver-nodejs/blob/master/examples/complex-demo.js
+// https://www.lunos.de/files/Downloads/Einbauanleitungen/Einbauanleitung_5UNI-FT_E206_ab-SN-200.000.pdf
+
 import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service, Characteristic } from 'homebridge';
 
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
