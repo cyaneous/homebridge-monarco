@@ -155,11 +155,11 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
     }
   }
 
-  function pad(num, size){
+  pad(num, size) {
     var s = "0000000000" + num;
     return s.substr(s.length - size);
   }
-  
+
   getRegValue(registers, id) {
     for(var itm of registers) {
       if(itm.register === id) {
