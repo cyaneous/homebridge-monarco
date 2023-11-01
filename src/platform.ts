@@ -3,7 +3,7 @@ import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, 
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
 import { LunosFanAccessory, ContactSensorAccessory } from './platformAccessory';
 
-var monarco = require('monarco-hat');
+import monarco = require('monarco-hat');
 
 const SDC_FIXED_FWVERL = 1;
 const SDC_FIXED_FWVERH = 2;
@@ -13,11 +13,12 @@ const SDC_FIXED_CPUID1 = 5;
 const SDC_FIXED_CPUID2 = 6;
 const SDC_FIXED_CPUID3 = 7;
 const SDC_FIXED_CPUID4 = 8;
-const SDC_FIXED_RS485BAUD = 0x1010;
-const SDC_FIXED_RS485MODE = 0X1011;
+// const SDC_FIXED_RS485BAUD = 0x1010;
+// const SDC_FIXED_RS485MODE = 0X1011;
 const SDC_FIXED_WATCHDOG = 0X100F;
-const SDC_FIXED_CNT1MODE = 0x1024;
-const SDC_FIXED_CNT2MODE = 0x1025;
+// const SDC_FIXED_CNT1MODE = 0x1024;
+// const SDC_FIXED_CNT2MODE = 0x1025;
+
 /**
  * HomebridgePlatform
  * This class is the main constructor for your plugin, this is where you should
@@ -49,23 +50,24 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
         this.log.debug('Initializing Monarco HAT...');
 
         monarco.on('err', (err, msg) => {
-          this.log.error('Error:' + err);
+          this.log.error('Error:', err, msg);
         });
 
         monarco.init().then(() => {
-          var FW = (this.getRegValue(monarco.serviceData, SDC_FIXED_FWVERH) << 16)
+          const FW = (this.getRegValue(monarco.serviceData, SDC_FIXED_FWVERH) << 16)
             + (this.getRegValue(monarco.serviceData, SDC_FIXED_FWVERL));
 
-          var HW = (this.getRegValue(monarco.serviceData, SDC_FIXED_HWVERH) << 16)
+          const HW = (this.getRegValue(monarco.serviceData, SDC_FIXED_HWVERH) << 16)
             + (this.getRegValue(monarco.serviceData, SDC_FIXED_HWVERL));
 
-          var CPUID_1 = (this.getRegValue(monarco.serviceData, SDC_FIXED_CPUID4) << 16)
+          const CPUID_1 = (this.getRegValue(monarco.serviceData, SDC_FIXED_CPUID4) << 16)
             + (this.getRegValue(monarco.serviceData, SDC_FIXED_CPUID3));
 
-          var CPUID_2 = (this.getRegValue(monarco.serviceData, SDC_FIXED_CPUID2) << 16)
+          const CPUID_2 = (this.getRegValue(monarco.serviceData, SDC_FIXED_CPUID2) << 16)
             + (this.getRegValue(monarco.serviceData, SDC_FIXED_CPUID1));
 
-          this.log.debug('MONARCO SDC INIT DONE, FW=' + this.pad(FW.toString(16), 8) + ', HW=' + this.pad(HW.toString(16), 8) + ', CPUID=' + this.pad(CPUID_1, 8) + this.pad(CPUID_2, 8));
+          this.log.debug('MONARCO SDC INIT DONE, FW=' + this.pad(FW.toString(16), 8) + ', HW=' +
+            this.pad(HW.toString(16), 8) + ', CPUID=' + this.pad(CPUID_1, 8) + this.pad(CPUID_2, 8));
 
           //this.setRegValue(monarco.serviceData, SDC_FIXED_CNT1MODE, monarco.SDC.MONARCO_SDC_COUNTER_MODE_OFF);
           //this.setRegValue(monarco.serviceData, SDC_FIXED_CNT2MODE, monarco.SDC.MONARCO_SDC_COUNTER_MODE_QUAD);
@@ -99,7 +101,8 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
       // something globally unique, but constant, for example, the device serial
       // number or MAC address
 
-      const uuid = this.api.hap.uuid.generate(device.kind + '_DI'+device.digitalInput+'DO'+device.digitalOutput+'AI'+device.analogInput+'AO'+device.analogOutput);
+      const uuid = this.api.hap.uuid.generate(device.kind + '_DI'+device.digitalInput+'DO'+
+        device.digitalOutput+'AI'+device.analogInput+'AO'+device.analogOutput);
 
       // see if an accessory with the same uuid has already been registered and restored from
       // the cached devices we stored in the `configureAccessory` method above
@@ -148,6 +151,7 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
         new ContactSensorAccessory(this, accessory);
         break;
       case 'lunosE2':
+        // falls through
       case 'lunosEgo':
         new LunosFanAccessory(this, accessory);
         break;
@@ -157,22 +161,22 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
   }
 
   pad(num, size) {
-    var s = "0000000000" + num;
+    const s = '0000000000' + num;
     return s.substr(s.length - size);
   }
 
   getRegValue(registers, id) {
-    for(var itm of registers) {
+    for(const itm of registers) {
       if(itm.register === id) {
-          return itm.value;
-      }    
+        return itm.value;
+      }
     }
     this.log.error('Register not found: ' + id);
     return 0;
   }
 
   setRegValue(registers, id, value) {
-    for(var itm of registers) {
+    for(const itm of registers) {
       if(itm.register === id) {
         return itm.value = value;
       }

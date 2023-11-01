@@ -2,7 +2,7 @@ import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
 
 import { MonarcoPlatform } from './platform';
 
-var monarco = require('monarco-hat');
+import monarco = require('monarco-hat');
 
 const LUNOS_FAN_V = {
   AUTO: 0.0, // 0.0 - 0.4 (the controller works independently, according to internal sensors)
@@ -38,9 +38,14 @@ export class LunosFanAccessory {
     this.analogOutput = accessory.context.device.analogOutput;
 
     switch (this.kind) {
-      case 'lunosE2': this.model = 'Lunos e2';
-      case 'lunosEgo': this.model = 'Lunos ego';
-      default: this.model = 'Unknown';
+      case 'lunosE2':
+        this.model = 'Lunos e2';
+        break;
+      case 'lunosEgo':
+        this.model = 'Lunos ego';
+        break;
+      default:
+        this.model = 'Unknown';
     }
 
     // set accessory information
@@ -65,7 +70,7 @@ export class LunosFanAccessory {
     // register handlers for the RotationSpeed Characteristic
     this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed)
       .setProps({ minStep: 25, minValue: 0, maxValue: 100 })
-      .onSet(this.setRotationSpeed.bind(this)); 
+      .onSet(this.setRotationSpeed.bind(this));
   }
 
   async setActive(value: CharacteristicValue) {
@@ -91,7 +96,7 @@ export class LunosFanAccessory {
     this.platform.log.debug('Set Characteristic RotationSpeed -> ', value);
     this.state.RotationSpeed = value as number;
 
-    var v = LUNOS_FAN_V.AUTO;
+    let v = LUNOS_FAN_V.AUTO;
     switch (this.kind) {
       case 'lunosE2':
         if (value <= 0) {
@@ -107,14 +112,14 @@ export class LunosFanAccessory {
         }
         break;
       case 'lunosEgo':
-        if (value <= 0) { 
+        if (value <= 0) {
           v = LUNOS_FAN_V.AUTO;
         } else if (value <= 25) {
           v = LUNOS_FAN_V.STAGE_2;
         } else if (value <= 50) {
-         v = LUNOS_FAN_V.STAGE_6;
+          v = LUNOS_FAN_V.STAGE_6;
         } else if (value <= 75) {
-         v = LUNOS_FAN_V.STAGE_8;
+          v = LUNOS_FAN_V.STAGE_8;
         } else if (value <= 100) {
           v = LUNOS_FAN_V.STAGE_8 + LUNOS_FAN_V.SUMMER_OFFSET;
         }
@@ -161,7 +166,8 @@ export class ContactSensorAccessory {
 
     // get the ContactSensor service if it exists, otherwise create a new ContactSensor service
     // you can create multiple services for each accessory
-    this.service = this.accessory.getService(this.platform.Service.ContactSensor) || this.accessory.addService(this.platform.Service.ContactSensor);
+    this.service = this.accessory.getService(this.platform.Service.ContactSensor) 
+      || this.accessory.addService(this.platform.Service.ContactSensor);
 
     // set the service name, this is what is displayed as the default name on the Home app
     // in this example we are using the name we stored in the `accessory.context` in the `discoverDevices` method.
@@ -171,14 +177,15 @@ export class ContactSensorAccessory {
     this.service.getCharacteristic(this.platform.Characteristic.ContactSensorState)
       .onGet(this.getContactSensorState.bind(this));
 
-    var tick = 0;
+    let tick = 0;
     monarco.on('rx', (data) => {
       tick++;
 
       if(tick % 32 === 0) {
         if (this.digitalInput >= 1 && this.digitalInput <= 4) {
-          var contactSensorState = data.digitalInputs[this.digitalInput-1] ?
-            this.platform.Characteristic.ContactSensorState.CONTACT_NOT_DETECTED : this.platform.Characteristic.ContactSensorState.CONTACT_DETECTED;
+          const contactSensorState = data.digitalInputs[this.digitalInput-1] ?
+            this.platform.Characteristic.ContactSensorState.CONTACT_NOT_DETECTED :
+            this.platform.Characteristic.ContactSensorState.CONTACT_DETECTED;
           this.state.ContactSensorState = contactSensorState;
           this.service.setCharacteristic(this.platform.Characteristic.ContactSensorState, contactSensorState);
         }
