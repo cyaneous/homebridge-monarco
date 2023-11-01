@@ -37,6 +37,10 @@ export class LunosFanAccessory {
     this.kind = accessory.context.device.kind;
     this.analogOutput = accessory.context.device.analogOutput;
 
+    if (this.analogOutput < 1 || this.analogOutput > 2) {
+      this.platform.log.error(accessory.context.name, ': invalid analog output in configuration:', this.digitalInput);
+    }
+
     switch (this.kind) {
       case 'lunosE2':
         this.model = 'Lunos e2';
@@ -46,6 +50,7 @@ export class LunosFanAccessory {
         break;
       default:
         this.model = 'Unknown';
+      this.platform.log.error(accessory.context.name, ': unrecognized model in configuration:', this.kind);
     }
 
     // set accessory information
@@ -128,7 +133,9 @@ export class LunosFanAccessory {
         this.platform.log.error('Unexpected Lunos fan kind:', this.kind);
     }
 
-    monarco.analogOutputs[this.analogOutput-1] = v;
+    if (this.analogOutput >= 1 && this.analogOutput <= 2) {
+      monarco.analogOutputs[this.analogOutput-1] = v;
+    }
   }
 
   async getRotationSpeed(): Promise<CharacteristicValue> {
@@ -157,6 +164,10 @@ export class ContactSensorAccessory {
     private readonly accessory: PlatformAccessory,
   ) {
     this.digitalInput = accessory.context.device.digitalInput;
+
+    if (this.digitalInput < 1 || this.digitalInput > 4) {
+      this.platform.log.error(accessory.context.name, ': invalid digital input in configuration:', this.digitalInput);
+    }
 
     // set accessory information
     this.accessory.getService(this.platform.Service.AccessoryInformation)!

@@ -97,10 +97,15 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
   configureDevices(config) {
     // loop over the discovered devices and register each one if it has not already been registered
     for (const device of config.devices) {
+      // input/output defaults
+      if (device.digitalInput == undefined) device.digitalInput = 0;
+      if (device.digitalOutput == undefined) device.digitalOutput = 0;
+      if (device.analogInput == undefined) device.analogInput = 0;
+      if (device.analogOutput == undefined) device.analogOutput = 0;
+
       // generate a unique id for the accessory this should be generated from
       // something globally unique, but constant, for example, the device serial
       // number or MAC address
-
       const uuid = this.api.hap.uuid.generate(device.kind + '_DI'+device.digitalInput+'DO'+
         device.digitalOutput+'AI'+device.analogInput+'AO'+device.analogOutput);
 
