@@ -5,7 +5,7 @@ import { MonarcoPlatform } from './platform';
 var monarco = require('monarco-hat');
 
 const LUNOS_FAN_V = {
-  AUTO: 0.0, // 0.0 - 0.4 (managed by Lunos controller)
+  AUTO: 0.0, // 0.0 - 0.4 (the controller works independently, according to internal sensors)
   STAGE_0: 0.7, // 0.6 - 0.9 (off)
   STAGE_1: 1.2, // 1.1 - 1.4
   STAGE_2: 1.7, // 1.6 - 1.9

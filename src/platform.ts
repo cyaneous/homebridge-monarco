@@ -71,7 +71,7 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
           //this.setRegValue(monarco.serviceData, SDC_FIXED_CNT2MODE, monarco.SDC.MONARCO_SDC_COUNTER_MODE_QUAD);
           //this.setRegValue(monarco.serviceData, SDC_FIXED_RS485BAUD, 384);
           //this.setRegValue(monarco.serviceData, SDC_FIXED_RS485MODE, monarco.SDC.MONARCO_SDC_RS485_DEFAULT_MODE);
-          this.setRegValue(monarco.serviceData, SDC_FIXED_WATCHDOG, config.watchdogTimeout);
+          this.setRegValue(monarco.serviceData, SDC_FIXED_WATCHDOG, config.watchdogTimeout * 1000);
           this.configureDevices(config);
         });
       } catch (error) {
