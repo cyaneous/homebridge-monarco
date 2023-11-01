@@ -65,7 +65,7 @@
             "digitalInput": {
               "title": "Digital Input",
               "description": "The digital input used for this device.",
-              "type": "integer",
+              "type": "number",
               "required": true,
               "default": 1,
               "minimum": 1,
@@ -77,7 +77,7 @@
             "digitalOutput": {
               "title": "Digital Output",
               "description": "The digital output used for this device.",
-              "type": "integer",
+              "type": "number",
               "required": true,
               "default": 1,
               "minimum": 1,
@@ -89,7 +89,7 @@
             "analogInput": {
               "title": "Analog Input",
               "description": "The analog input used for this device.",
-              "type": "integer",
+              "type": "number",
               "required": true,
               "default": 1,
               "minimum": 1,
@@ -101,7 +101,7 @@
             "analogOutput": {
               "title": "Analog Output",
               "description": "The analog output used for this device.",
-              "type": "integer",
+              "type": "number",
               "required": true,
               "default": 1,
               "minimum": 1,
