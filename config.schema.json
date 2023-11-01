@@ -16,8 +16,8 @@
         "description": "The Raspberry Pi will be power-cycled by the watchdog after this many seconds of timeout.",
         "type": "integer",
         "required": true,
-        "default": 1,
-        "minimum": 0,
+        "default": 5,
+        "minimum": 1,
         "maximum": 300
       },
       "devices": {
@@ -79,7 +79,7 @@
               "description": "The digital output used for this device.",
               "type": "integer",
               "required": true,
-              "default": null,
+              "default": 1,
               "minimum": 1,
               "maximum": 4,
               "condition": {
