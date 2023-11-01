@@ -72,8 +72,8 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
           //this.setRegValue(monarco.serviceData, SDC_FIXED_RS485BAUD, 384);
           //this.setRegValue(monarco.serviceData, SDC_FIXED_RS485MODE, monarco.SDC.MONARCO_SDC_RS485_DEFAULT_MODE);
           this.setRegValue(monarco.serviceData, SDC_FIXED_WATCHDOG, config.watchdogTimeout * 1000);
-          this.configureDevices(config);
         });
+          this.configureDevices(config);
       } catch (error) {
         this.log.error('Init failed:', error);
         return;
