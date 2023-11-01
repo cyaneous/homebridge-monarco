@@ -62,8 +62,8 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
           var CPUID_1 = (this.getRegValue(monarco.serviceData, SDC_FIXED_CPUID4) << 16)
             + (this.getRegValue(monarco.serviceData, SDC_FIXED_CPUID3));
 
-          var CPUID_2 = (getRegValue(monarco.serviceData, SDC_FIXED_CPUID2) << 16)
-            + (getRegValue(monarco.serviceData, SDC_FIXED_CPUID1));
+          var CPUID_2 = (this.getRegValue(monarco.serviceData, SDC_FIXED_CPUID2) << 16)
+            + (this.getRegValue(monarco.serviceData, SDC_FIXED_CPUID1));
 
           this.log.debug('MONARCO SDC INIT DONE, FW=' + pad(FW.toString(16), 8) + ', HW=' + pad(HW.toString(16), 8) + ', CPUID=' + pad(CPUID_1, 8) + pad(CPUID_2, 8));
 
@@ -155,6 +155,11 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
     }
   }
 
+  function pad(num, size){
+    var s = "0000000000" + num;
+    return s.substr(s.length - size);
+  }
+  
   getRegValue(registers, id) {
     for(var itm of registers) {
       if(itm.register === id) {
@@ -166,8 +171,8 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
   }
 
   setRegValue(registers, id, value) {
-    for(var itm of registers){
-      if(itm.register === id){
+    for(var itm of registers) {
+      if(itm.register === id) {
         return itm.value = value;
       }
     }
