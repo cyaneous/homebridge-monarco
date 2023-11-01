@@ -155,27 +155,27 @@
               "items": [
                 {
                   "key": "devices[].kind",
-                  "title": "Kind",
+                  "title": "Kind"
                 },
                 {
                   "key": "managedDevices[].name",
-                  "title": "Name",
+                  "title": "Name"
                 },
                 {
                   "key": "devices[].digitalInput",
-                  "title": "Digital Input",
+                  "title": "Digital Input"
                 },
                 {
                   "key": "devices[].analogInput",
-                  "title": "Analog Input",
+                  "title": "Analog Input"
                 },
                 {
                   "key": "devices[].digitalOutput",
-                  "title": "Digital Output",
+                  "title": "Digital Output"
                 },
                 {
                   "key": "devices[].analogOutput",
-                  "title": "Analog Output",
+                  "title": "Analog Output"
                 }
               ]
             }
