@@ -5,6 +5,19 @@ import { LunosFanAccessory, ContactSensorAccessory } from './platformAccessory';
 
 var monarco = require('monarco-hat');
 
+const SDC_FIXED_FWVERL = 1;
+const SDC_FIXED_FWVERH = 2;
+const SDC_FIXED_HWVERL = 3;
+const SDC_FIXED_HWVERH = 4;
+const SDC_FIXED_CPUID1 = 5;
+const SDC_FIXED_CPUID2 = 6;
+const SDC_FIXED_CPUID3 = 7;
+const SDC_FIXED_CPUID4 = 8;
+const SDC_FIXED_RS485BAUD = 0x1010;
+const SDC_FIXED_RS485MODE = 0X1011;
+const SDC_FIXED_WATCHDOG = 0X100F;
+const SDC_FIXED_CNT1MODE = 0x1024;
+const SDC_FIXED_CNT2MODE = 0x1025;
 /**
  * HomebridgePlatform
  * This class is the main constructor for your plugin, this is where you should
@@ -24,6 +37,8 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
   ) {
     this.log.debug('Finished initializing platform:', this.config.name);
 
+    this.log.info('Cycle Interval: ' + monarco._period + 'ms');
+
     // When this event is fired it means Homebridge has restored all cached accessories from disk.
     // Dynamic Platform plugins should only register new accessories after this event was fired,
     // in order to ensure they weren't added to homebridge already. This event can also be used
@@ -38,6 +53,25 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
         });
 
         monarco.init().then(() => {
+          var FW = (this.getRegValue(monarco.serviceData, SDC_FIXED_FWVERH) << 16)
+            + (this.getRegValue(monarco.serviceData, SDC_FIXED_FWVERL));
+
+          var HW = (this.getRegValue(monarco.serviceData, SDC_FIXED_HWVERH) << 16)
+            + (this.getRegValue(monarco.serviceData, SDC_FIXED_HWVERL));
+
+          var CPUID_1 = (this.getRegValue(monarco.serviceData, SDC_FIXED_CPUID4) << 16)
+            + (this.getRegValue(monarco.serviceData, SDC_FIXED_CPUID3));
+
+          var CPUID_2 = (getRegValue(monarco.serviceData, SDC_FIXED_CPUID2) << 16)
+            + (getRegValue(monarco.serviceData, SDC_FIXED_CPUID1));
+
+          this.log.debug('MONARCO SDC INIT DONE, FW=' + pad(FW.toString(16), 8) + ', HW=' + pad(HW.toString(16), 8) + ', CPUID=' + pad(CPUID_1, 8) + pad(CPUID_2, 8));
+
+          //this.setRegValue(monarco.serviceData, SDC_FIXED_CNT1MODE, monarco.SDC.MONARCO_SDC_COUNTER_MODE_OFF);
+          //this.setRegValue(monarco.serviceData, SDC_FIXED_CNT2MODE, monarco.SDC.MONARCO_SDC_COUNTER_MODE_QUAD);
+          //this.setRegValue(monarco.serviceData, SDC_FIXED_RS485BAUD, 384);
+          //this.setRegValue(monarco.serviceData, SDC_FIXED_RS485MODE, monarco.SDC.MONARCO_SDC_RS485_DEFAULT_MODE);
+          this.setRegValue(monarco.serviceData, SDC_FIXED_WATCHDOG, config.watchdogTimeout);
           this.configureDevices(config);
         });
       } catch (error) {
@@ -119,5 +153,24 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
       default:
         this.log.error('Invalid device kind:' + device.kind);
     }
+  }
+
+  getRegValue(registers, id) {
+    for(var itm of registers) {
+      if(itm.register === id) {
+          return itm.value;
+      }    
+    }
+    this.log.error('Register not found: ' + id);
+    return 0;
+  }
+
+  setRegValue(registers, id, value) {
+    for(var itm of registers){
+      if(itm.register === id){
+        return itm.value = value;
+      }
+    }
+    this.log.error('Register not found: ' + id);
   }
 }
