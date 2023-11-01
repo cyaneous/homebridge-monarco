@@ -50,7 +50,7 @@ export class LunosFanAccessory {
         break;
       default:
         this.model = 'Unknown';
-      this.platform.log.error(accessory.context.name, ': unrecognized model in configuration:', this.kind);
+        this.platform.log.error(accessory.context.name, ': unrecognized model in configuration:', this.kind);
     }
 
     // set accessory information
