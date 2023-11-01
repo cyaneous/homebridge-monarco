@@ -38,7 +38,7 @@ export class LunosFanAccessory {
     this.analogOutput = accessory.context.device.analogOutput;
 
     if (this.analogOutput < 1 || this.analogOutput > 2) {
-      this.platform.log.error(accessory.context.name, ': invalid analog output in configuration:', this.digitalInput);
+      this.platform.log.error(accessory.context.name, ': invalid analog output in configuration:', this.analogOutput);
     }
 
     switch (this.kind) {
