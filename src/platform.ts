@@ -51,33 +51,32 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
       try {
         this.log.info('Initializing Monarco HAT...');
 
+        const FW = (this.getRegValue(monarco.serviceData, SDC_FIXED_FWVERH) << 16)
+          + (this.getRegValue(monarco.serviceData, SDC_FIXED_FWVERL));
+
+        const HW = (this.getRegValue(monarco.serviceData, SDC_FIXED_HWVERH) << 16)
+          + (this.getRegValue(monarco.serviceData, SDC_FIXED_HWVERL));
+
+        const CPUID_1 = (this.getRegValue(monarco.serviceData, SDC_FIXED_CPUID4) << 16)
+          + (this.getRegValue(monarco.serviceData, SDC_FIXED_CPUID3));
+
+        const CPUID_2 = (this.getRegValue(monarco.serviceData, SDC_FIXED_CPUID2) << 16)
+          + (this.getRegValue(monarco.serviceData, SDC_FIXED_CPUID1));
+
+        this.log.info('MONARCO SDC INIT DONE, FW=' + this.pad(FW.toString(16), 8) + ', HW=' +
+          this.pad(HW.toString(16), 8) + ', CPUID=' + this.pad(CPUID_1, 8) + this.pad(CPUID_2, 8));
+
+        //this.setRegValue(monarco.serviceData, SDC_FIXED_CNT1MODE, monarco.SDC.MONARCO_SDC_COUNTER_MODE_OFF);
+        //this.setRegValue(monarco.serviceData, SDC_FIXED_CNT2MODE, monarco.SDC.MONARCO_SDC_COUNTER_MODE_QUAD);
+        //this.setRegValue(monarco.serviceData, SDC_FIXED_RS485BAUD, 384);
+        //this.setRegValue(monarco.serviceData, SDC_FIXED_RS485MODE, monarco.SDC.MONARCO_SDC_RS485_DEFAULT_MODE);
+        this.setRegValue(monarco.serviceData, SDC_FIXED_WATCHDOG, config.watchdogTimeout * 1000);
+        
         monarco.on('err', (err, msg) => {
           this.log.error('Error:', err, msg);
         });
 
-          this.log.info('INIT...');
         monarco.init().then(() => {
-          this.log.info('Reading info...');
-          const FW = (this.getRegValue(monarco.serviceData, SDC_FIXED_FWVERH) << 16)
-            + (this.getRegValue(monarco.serviceData, SDC_FIXED_FWVERL));
-
-          const HW = (this.getRegValue(monarco.serviceData, SDC_FIXED_HWVERH) << 16)
-            + (this.getRegValue(monarco.serviceData, SDC_FIXED_HWVERL));
-
-          const CPUID_1 = (this.getRegValue(monarco.serviceData, SDC_FIXED_CPUID4) << 16)
-            + (this.getRegValue(monarco.serviceData, SDC_FIXED_CPUID3));
-
-          const CPUID_2 = (this.getRegValue(monarco.serviceData, SDC_FIXED_CPUID2) << 16)
-            + (this.getRegValue(monarco.serviceData, SDC_FIXED_CPUID1));
-
-          this.log.info('MONARCO SDC INIT DONE, FW=' + this.pad(FW.toString(16), 8) + ', HW=' +
-            this.pad(HW.toString(16), 8) + ', CPUID=' + this.pad(CPUID_1, 8) + this.pad(CPUID_2, 8));
-
-          //this.setRegValue(monarco.serviceData, SDC_FIXED_CNT1MODE, monarco.SDC.MONARCO_SDC_COUNTER_MODE_OFF);
-          //this.setRegValue(monarco.serviceData, SDC_FIXED_CNT2MODE, monarco.SDC.MONARCO_SDC_COUNTER_MODE_QUAD);
-          //this.setRegValue(monarco.serviceData, SDC_FIXED_RS485BAUD, 384);
-          //this.setRegValue(monarco.serviceData, SDC_FIXED_RS485MODE, monarco.SDC.MONARCO_SDC_RS485_DEFAULT_MODE);
-          this.setRegValue(monarco.serviceData, SDC_FIXED_WATCHDOG, config.watchdogTimeout * 1000);
           this.configureDevices(config);
         });
       } catch (error) {
