@@ -49,7 +49,7 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
     // to start discovery of new accessories.
     this.api.on('didFinishLaunching', () => {
       try {
-        this.log.info('Initializing Monarco HAT...');
+        this.log.debug('Initializing Monarco HAT...');
 
         const FW = (this.getRegValue(monarco.serviceData, SDC_FIXED_FWVERH) << 16)
           + (this.getRegValue(monarco.serviceData, SDC_FIXED_FWVERL));

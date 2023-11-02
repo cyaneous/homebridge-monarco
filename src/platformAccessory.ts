@@ -98,7 +98,7 @@ export class LunosFanAccessory {
   }
 
   async setRotationSpeed(value: CharacteristicValue) {
-    this.platform.log.debug('Set Characteristic RotationSpeed -> ', value);
+    this.platform.log.info('Set Characteristic RotationSpeed -> ', value);
     this.state.RotationSpeed = value as number;
 
     let v = LUNOS_FAN_V.AUTO;
