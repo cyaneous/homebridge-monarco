@@ -55,6 +55,7 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
           this.log.error('Error:', err, msg);
         });
 
+          this.log.info('INIT...');
         monarco.init().then(() => {
           this.log.info('Reading info...');
           const FW = (this.getRegValue(monarco.serviceData, SDC_FIXED_FWVERH) << 16)
