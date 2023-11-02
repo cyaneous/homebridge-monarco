@@ -48,15 +48,15 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
     // in order to ensure they weren't added to homebridge already. This event can also be used
     // to start discovery of new accessories.
     this.api.on('didFinishLaunching', () => {
-      log.debug('Executed didFinishLaunching callback');
       try {
-        this.log.debug('Initializing Monarco HAT...');
+        this.log.info('Initializing Monarco HAT...');
 
         monarco.on('err', (err, msg) => {
           this.log.error('Error:', err, msg);
         });
 
         monarco.init().then(() => {
+          this.log.info('Reading info...');
           const FW = (this.getRegValue(monarco.serviceData, SDC_FIXED_FWVERH) << 16)
             + (this.getRegValue(monarco.serviceData, SDC_FIXED_FWVERL));
 
