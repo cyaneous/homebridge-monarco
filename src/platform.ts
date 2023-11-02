@@ -69,7 +69,7 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
           const CPUID_2 = (this.getRegValue(monarco.serviceData, SDC_FIXED_CPUID2) << 16)
             + (this.getRegValue(monarco.serviceData, SDC_FIXED_CPUID1));
 
-          this.log.debug('MONARCO SDC INIT DONE, FW=' + this.pad(FW.toString(16), 8) + ', HW=' +
+          this.log.info('MONARCO SDC INIT DONE, FW=' + this.pad(FW.toString(16), 8) + ', HW=' +
             this.pad(HW.toString(16), 8) + ', CPUID=' + this.pad(CPUID_1, 8) + this.pad(CPUID_2, 8));
 
           //this.setRegValue(monarco.serviceData, SDC_FIXED_CNT1MODE, monarco.SDC.MONARCO_SDC_COUNTER_MODE_OFF);
