@@ -152,13 +152,9 @@ export class LunosFanAccessory {
         this.platform.log.error('Unexpected Lunos fan kind:', this.kind);
     }
 
-      if (this.analogOutput >= 1 && this.analogOutput <= 2) {
-        if this.state.Active {
-          monarco.analogOutputs[this.analogOutput-1] = v;
-        } else {
-          monarco.analogOutputs[this.analogOutput-1] = LUNOS_FAN_V.AUTO;
-        }
-      }
+    if (this.analogOutput >= 1 && this.analogOutput <= 2) {
+      monarco.analogOutputs[this.analogOutput-1] = v;
+    }
   }
 
 }
