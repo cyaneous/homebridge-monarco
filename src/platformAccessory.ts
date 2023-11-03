@@ -22,7 +22,7 @@ export class LunosFanAccessory {
   private service: Service;
   private kind: string;
   private analogOutput: number;
-  private autoVentilationEnabled: bool;
+  private autoVentilationEnabled: boolean;
   private model: string;
 
   private state = {
