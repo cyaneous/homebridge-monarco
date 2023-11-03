@@ -120,9 +120,9 @@ export class LunosFanAccessory {
         if (value <= 0) {
           v = LUNOS_FAN_V.AUTO;
         } else if (value <= 25) {
-          v = LUNOS_FAN_V.STAGE_2;
-        } else if (value <= 50) {
           v = LUNOS_FAN_V.STAGE_6;
+        } else if (value <= 50) {
+          v = LUNOS_FAN_V.STAGE_7;
         } else if (value <= 75) {
           v = LUNOS_FAN_V.STAGE_8;
         } else if (value <= 100) {
