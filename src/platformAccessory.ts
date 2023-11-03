@@ -74,7 +74,7 @@ export class LunosFanAccessory {
 
     // register handlers for the RotationSpeed Characteristic
     this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed)
-      .setProps({ minStep: 25, minValue: 0, maxValue: 100 })
+      .setProps({ minStep: 20, minValue: 0, maxValue: 100 })
       .onSet(this.setRotationSpeed.bind(this));
   }
 
@@ -106,12 +106,14 @@ export class LunosFanAccessory {
       case 'lunosE2':
         if (value <= 0) {
           v = LUNOS_FAN_V.AUTO;
-        } else if (value <= 25) {
+        } else if (value <= 20) {
           v = LUNOS_FAN_V.STAGE_2;
-        } else if (value <= 50) {
+        } else if (value <= 40) {
           v = LUNOS_FAN_V.STAGE_4;
-        } else if (value <= 75) {
+        } else if (value <= 60) {
           v = LUNOS_FAN_V.STAGE_6;
+        } else if (value <= 80) {
+          v = LUNOS_FAN_V.STAGE_7;
         } else if (value <= 100) {
           v = LUNOS_FAN_V.STAGE_8;
         }
@@ -119,11 +121,13 @@ export class LunosFanAccessory {
       case 'lunosEgo':
         if (value <= 0) {
           v = LUNOS_FAN_V.AUTO;
-        } else if (value <= 25) {
+        } else if (value <= 20) {
+          v = LUNOS_FAN_V.STAGE_5;
+        } else if (value <= 40) {
           v = LUNOS_FAN_V.STAGE_6;
-        } else if (value <= 50) {
+        } else if (value <= 60) {
           v = LUNOS_FAN_V.STAGE_7;
-        } else if (value <= 75) {
+        } else if (value <= 80) {
           v = LUNOS_FAN_V.STAGE_8;
         } else if (value <= 100) {
           v = LUNOS_FAN_V.STAGE_8 + LUNOS_FAN_V.SUMMER_OFFSET;
