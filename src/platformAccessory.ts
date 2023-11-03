@@ -81,7 +81,7 @@ export class LunosFanAccessory {
   }
 
   async setActive(value: CharacteristicValue) {
-    this.platform.log.debug('Set Characteristic Active ->', value);
+    this.platform.log.info('Set Characteristic Active ->', value);
 
     this.state.Active = value as boolean;
     this.updateAnalogOutputState();
