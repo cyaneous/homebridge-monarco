@@ -22,6 +22,7 @@ export class LunosFanAccessory {
   private service: Service;
   private kind: string;
   private analogOutput: number;
+  private autoVentilationEnabled: bool;
   private model: string;
 
   private state = {
@@ -36,6 +37,7 @@ export class LunosFanAccessory {
   ) {
     this.kind = accessory.context.device.kind;
     this.analogOutput = accessory.context.device.analogOutput;
+    this.autoVentilationEnabled = accessory.context.device.autoVentilationEnabled;
 
     if (this.analogOutput < 1 || this.analogOutput > 2) {
       this.platform.log.error(accessory.context.name, ': invalid analog output in configuration:', this.analogOutput);
@@ -81,8 +83,8 @@ export class LunosFanAccessory {
   async setActive(value: CharacteristicValue) {
     this.platform.log.debug('Set Characteristic Active ->', value);
 
-    // implement your own code to turn your device on/off
     this.state.Active = value as boolean;
+    this.updateAnalogOutputState();
   }
 
   async getActive(): Promise<CharacteristicValue> {
@@ -100,42 +102,7 @@ export class LunosFanAccessory {
   async setRotationSpeed(value: CharacteristicValue) {
     this.platform.log.info('Set Characteristic RotationSpeed -> ', value);
     this.state.RotationSpeed = value as number;
-
-    let v = LUNOS_FAN_V.AUTO;
-    switch (this.kind) {
-      case 'lunosE2':
-        if (value <= 0) {
-          v = LUNOS_FAN_V.AUTO;
-        } else if (value <= 25) {
-          v = LUNOS_FAN_V.STAGE_2;
-        } else if (value <= 50) {
-          v = LUNOS_FAN_V.STAGE_4;
-        } else if (value <= 75) {
-          v = LUNOS_FAN_V.STAGE_6;
-        } else if (value <= 100) {
-          v = LUNOS_FAN_V.STAGE_8;
-        }
-        break;
-      case 'lunosEgo':
-        if (value <= 0) {
-          v = LUNOS_FAN_V.AUTO;
-        } else if (value <= 25) {
-          v = LUNOS_FAN_V.STAGE_6;
-        } else if (value <= 50) {
-          v = LUNOS_FAN_V.STAGE_7;
-        } else if (value <= 75) {
-          v = LUNOS_FAN_V.STAGE_8;
-        } else if (value <= 100) {
-          v = LUNOS_FAN_V.STAGE_8 + LUNOS_FAN_V.SUMMER_OFFSET;
-        }
-        break;
-      default:
-        this.platform.log.error('Unexpected Lunos fan kind:', this.kind);
-    }
-
-    if (this.analogOutput >= 1 && this.analogOutput <= 2) {
-      monarco.analogOutputs[this.analogOutput-1] = v;
-    }
+    this.updateAnalogOutputState();
   }
 
   async getRotationSpeed(): Promise<CharacteristicValue> {
@@ -147,6 +114,51 @@ export class LunosFanAccessory {
     // throw new this.platform.api.hap.HapStatusError(this.platform.api.hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE);
 
     return rotationSpeed;
+  }
+
+  updateAnalogOutputState() {
+    const active = this.state.Active;
+    const rotationSpeed = this.state.RotationSpeed;
+
+    let v = LUNOS_FAN_V.AUTO;
+    switch (this.kind) {
+      case 'lunosE2':
+        if (rotationSpeed <= 0 || !active) {
+          v = this.autoVentilationEnabled ? LUNOS_FAN_V.AUTO : LUNOS_FAN_V.STAGE_0;
+        } else if (rotationSpeed <= 25) {
+          v = LUNOS_FAN_V.STAGE_2;
+        } else if (rotationSpeed <= 50) {
+          v = LUNOS_FAN_V.STAGE_4;
+        } else if (rotationSpeed <= 75) {
+          v = LUNOS_FAN_V.STAGE_6;
+        } else if (rotationSpeed <= 100) {
+          v = LUNOS_FAN_V.STAGE_8;
+        }
+        break;
+      case 'lunosEgo':
+        if (rotationSpeed <= 0 || !active) {
+          v = this.autoVentilationEnabled ? LUNOS_FAN_V.AUTO : LUNOS_FAN_V.STAGE_0;
+        } else if (rotationSpeed <= 25) {
+          v = LUNOS_FAN_V.STAGE_6;
+        } else if (rotationSpeed <= 50) {
+          v = LUNOS_FAN_V.STAGE_7;
+        } else if (rotationSpeed <= 75) {
+          v = LUNOS_FAN_V.STAGE_8;
+        } else if (rotationSpeed <= 100) {
+          v = LUNOS_FAN_V.STAGE_8 + LUNOS_FAN_V.SUMMER_OFFSET;
+        }
+        break;
+      default:
+        this.platform.log.error('Unexpected Lunos fan kind:', this.kind);
+    }
+
+      if (this.analogOutput >= 1 && this.analogOutput <= 2) {
+        if this.state.Active {
+          monarco.analogOutputs[this.analogOutput-1] = v;
+        } else {
+          monarco.analogOutputs[this.analogOutput-1] = LUNOS_FAN_V.AUTO;
+        }
+      }
   }
 
 }
