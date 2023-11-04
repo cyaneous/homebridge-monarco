@@ -202,7 +202,7 @@ export class LunosFanAccessory {
     }
 
     if (this.analogOutput >= 1 && this.analogOutput <= 2) {
-      monarco.analogOutputs[this.analogOutput-1] = v;
+      this.monarco.analogOutputs[this.analogOutput-1] = v;
     }
   }
 
