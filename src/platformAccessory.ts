@@ -87,13 +87,20 @@ export class LunosFanAccessory {
     this.service.getCharacteristic(this.platform.Characteristic.TargetFanState)
       .onGet(this.getTargetFanState.bind(this))
       .onSet(this.setTargetFanState.bind(this));
+
+    monarco.on('rx', (data) => {
+      tick++;
+
+      if(tick % 32 === 0) {
+        updateAnalogOutputState()
+      }
+    });
   }
 
   async setActive(value: CharacteristicValue) {
     this.platform.log.info('Set Characteristic Active ->', value);
 
     this.state.Active = value as boolean;
-    this.updateAnalogOutputState();
   }
 
   async getActive(): Promise<CharacteristicValue> {
@@ -110,7 +117,6 @@ export class LunosFanAccessory {
   async setRotationSpeed(value: CharacteristicValue) {
     this.platform.log.info('Set Characteristic RotationSpeed -> ', value);
     this.state.RotationSpeed = value as number;
-    this.updateAnalogOutputState();
   }
 
   async getRotationSpeed(): Promise<CharacteristicValue> {
@@ -128,7 +134,6 @@ export class LunosFanAccessory {
     this.platform.log.info('Set Characteristic SwingMode ->', value);
 
     this.state.SwingMode = value as number;
-    this.updateAnalogOutputState();
   }
 
   async getSwingMode(): Promise<CharacteristicValue> {
@@ -146,7 +151,6 @@ export class LunosFanAccessory {
     this.platform.log.info('Set Characteristic TargetFanState ->', value);
 
     this.state.TargetFanState = value as number;
-    this.updateAnalogOutputState();
   }
 
   async getTargetFanState(): Promise<CharacteristicValue> {
