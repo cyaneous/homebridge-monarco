@@ -37,10 +37,6 @@ export class LunosFanAccessory {
     this.kind = accessory.context.device.kind;
     this.analogOutput = accessory.context.device.analogOutput;
 
-    if (this.analogOutput < 1 || this.analogOutput > 2) {
-      this.platform.log.error(accessory.context.name, ': invalid analog output in configuration:', this.analogOutput);
-    }
-
     switch (this.kind) {
       case 'lunosE2':
         this.model = 'Lunos e2';
@@ -87,6 +83,11 @@ export class LunosFanAccessory {
     this.service.getCharacteristic(this.platform.Characteristic.TargetFanState)
       .onGet(this.getTargetFanState.bind(this))
       .onSet(this.setTargetFanState.bind(this));
+
+    if (this.analogOutput < 1 || this.analogOutput > 2) {
+      this.platform.log.error(accessory.context.name, ': invalid analog output in configuration:', this.analogOutput);
+      return;
+    }
 
     let tick = 0;
     monarco.on('rx', (data) => {
@@ -167,8 +168,13 @@ export class LunosFanAccessory {
   }
 
   updateAnalogOutputState() {
+    if (this.analogOutput > 1 || this.analogOutput > 2) {
+      return;
+    }
+
     const active = this.state.Active;
     const rotationSpeed = this.state.RotationSpeed;
+    const swingMode = this.state.SwingMode;
     const targetFanState = this.state.TargetFanState;
 
     let v = LUNOS_FAN_V.AUTO;
@@ -203,13 +209,11 @@ export class LunosFanAccessory {
         this.platform.log.error('Unexpected Lunos fan kind:', this.kind);
     }
 
-    if (this.state.SwingMode) {
+    if (swingMode) {
       v += LUNOS_FAN_V.SUMMER_OFFSET;
     }
 
-    if (this.analogOutput >= 1 && this.analogOutput <= 2) {
-      this.monarco.analogOutputs[this.analogOutput-1] = v;
-    }
+    this.monarco.analogOutputs[this.analogOutput-1] = v;
   }
 
 }
@@ -228,10 +232,6 @@ export class ContactSensorAccessory {
     private readonly monarco,
   ) {
     this.digitalInput = accessory.context.device.digitalInput;
-
-    if (this.digitalInput < 1 || this.digitalInput > 4) {
-      this.platform.log.error(accessory.context.name, ': invalid digital input in configuration:', this.digitalInput);
-    }
 
     // set accessory information
     this.accessory.getService(this.platform.Service.AccessoryInformation)!
@@ -252,20 +252,23 @@ export class ContactSensorAccessory {
     this.service.getCharacteristic(this.platform.Characteristic.ContactSensorState)
       .onGet(this.getContactSensorState.bind(this));
 
+    if (this.digitalInput < 1 || this.digitalInput > 4) {
+      this.platform.log.error(accessory.context.name, ': invalid digital input in configuration:', this.digitalInput);
+      return;
+    }
+
     let tick = 0;
     monarco.on('rx', (data) => {
       tick++;
 
       if(tick % 32 === 0) {
-        if (this.digitalInput >= 1 && this.digitalInput <= 4) {
-          const contactSensorState = data.digitalInputs[this.digitalInput-1] ?
-            this.platform.Characteristic.ContactSensorState.CONTACT_NOT_DETECTED :
-            this.platform.Characteristic.ContactSensorState.CONTACT_DETECTED;
+        const contactSensorState = data.digitalInputs[this.digitalInput-1] ?
+          this.platform.Characteristic.ContactSensorState.CONTACT_NOT_DETECTED :
+          this.platform.Characteristic.ContactSensorState.CONTACT_DETECTED;
 
-          if (this.state.ContactSensorState !== contactSensorState) {
-            this.state.ContactSensorState = contactSensorState;
-            this.service.setCharacteristic(this.platform.Characteristic.ContactSensorState, contactSensorState);
-          }
+        if (this.state.ContactSensorState !== contactSensorState) {
+          this.state.ContactSensorState = contactSensorState;
+          this.service.setCharacteristic(this.platform.Characteristic.ContactSensorState, contactSensorState);
         }
       }
     });
