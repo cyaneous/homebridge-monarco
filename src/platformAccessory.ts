@@ -92,6 +92,7 @@ export class LunosFanAccessory {
       tick++;
 
       if(tick % 32 === 0) {
+        this.platform.log.debug('rx', data);
         updateAnalogOutputState()
       }
     });
