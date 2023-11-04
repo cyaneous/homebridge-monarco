@@ -171,7 +171,7 @@ export class LunosFanAccessory {
         if (rotationSpeed <= 0 || !active) {
           v = this.state.LockPhysicalControls ? LUNOS_FAN_V.STAGE_0 : LUNOS_FAN_V.AUTO;
         } else if (rotationSpeed <= 25) {
-          v = LUNOS_FAN_V.STAGE_5;
+          v = LUNOS_FAN_V.STAGE_2;
         } else if (rotationSpeed <= 50) {
           v = LUNOS_FAN_V.STAGE_6;
         } else if (rotationSpeed <= 75) {
@@ -184,7 +184,7 @@ export class LunosFanAccessory {
         if (rotationSpeed <= 0 || !active) {
           v = this.state.LockPhysicalControls ? LUNOS_FAN_V.STAGE_0 : LUNOS_FAN_V.AUTO;
         } else if (rotationSpeed <= 25) {
-          v = LUNOS_FAN_V.STAGE_5;
+          v = LUNOS_FAN_V.STAGE_2;
         } else if (rotationSpeed <= 50) {
           v = LUNOS_FAN_V.STAGE_6;
         } else if (rotationSpeed <= 75) {
