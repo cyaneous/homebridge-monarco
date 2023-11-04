@@ -262,7 +262,7 @@ export class ContactSensorAccessory {
             this.platform.Characteristic.ContactSensorState.CONTACT_NOT_DETECTED :
             this.platform.Characteristic.ContactSensorState.CONTACT_DETECTED;
 
-          if (this.state.ContactSensorState != contactSensorState) {
+          if (this.state.ContactSensorState !== contactSensorState) {
             this.state.ContactSensorState = contactSensorState;
             this.service.setCharacteristic(this.platform.Characteristic.ContactSensorState, contactSensorState);
           }
