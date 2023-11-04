@@ -88,12 +88,13 @@ export class LunosFanAccessory {
       .onGet(this.getTargetFanState.bind(this))
       .onSet(this.setTargetFanState.bind(this));
 
+    let tick = 0;
     monarco.on('rx', (data) => {
       tick++;
 
       if(tick % 32 === 0) {
         this.platform.log.debug('rx', data);
-        updateAnalogOutputState();
+        this.updateAnalogOutputState();
       }
     });
   }
