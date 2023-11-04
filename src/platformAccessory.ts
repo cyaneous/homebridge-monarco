@@ -253,7 +253,7 @@ export class ContactSensorAccessory {
       .onGet(this.getContactSensorState.bind(this));
 
     let tick = 0;
-    monarco.on('rx', (data) => {
+    monarco.on('xrx', (data) => {
       tick++;
 
       if(tick % 32 === 0) {
