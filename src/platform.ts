@@ -67,7 +67,7 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
           this.pad(HW.toString(16), 8) + ', CPUID=' + this.pad(CPUID_1, 8) + this.pad(CPUID_2, 8));
 
         this.setRegValue(monarco.serviceData, SDC_FIXED_CNT1MODE, monarco.SDC.MONARCO_SDC_COUNTER_MODE_OFF);
-        this.setRegValue(monarco.serviceData, SDC_FIXED_CNT2MODE, monarco.SDC.MONARCO_SDC_COUNTER_MODE_QUAD);
+        this.setRegValue(monarco.serviceData, SDC_FIXED_CNT2MODE, monarco.SDC.MONARCO_SDC_COUNTER_MODE_OFF);
         this.setRegValue(monarco.serviceData, SDC_FIXED_RS485BAUD, 384);
         this.setRegValue(monarco.serviceData, SDC_FIXED_RS485MODE, monarco.SDC.MONARCO_SDC_RS485_DEFAULT_MODE);
         this.setRegValue(monarco.serviceData, SDC_FIXED_WATCHDOG, config.watchdogTimeout * 1000);
@@ -163,12 +163,12 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
   instantiateAccessory(device, accessory) {
     switch (device.kind) {
       case 'contactSensor':
-        new ContactSensorAccessory(this, accessory);
+        new ContactSensorAccessory(this, accessory, monarco);
         break;
       case 'lunosE2':
         // falls through
       case 'lunosEgo':
-        new LunosFanAccessory(this, accessory);
+        new LunosFanAccessory(this, accessory, monarco);
         break;
       default:
         this.log.error('Invalid device kind:' + device.kind);

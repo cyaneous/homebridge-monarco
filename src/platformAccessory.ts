@@ -2,8 +2,6 @@ import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
 
 import { MonarcoPlatform } from './platform';
 
-import monarco = require('monarco-hat');
-
 const LUNOS_FAN_V = {
   AUTO: 0.0, // 0.0 - 0.4 (the controller works independently, according to internal sensors)
   STAGE_0: 0.7, // 0.6 - 0.9 (off)
@@ -34,6 +32,7 @@ export class LunosFanAccessory {
   constructor(
     private readonly platform: MonarcoPlatform,
     private readonly accessory: PlatformAccessory,
+    private readonly monarco: object,
   ) {
     this.kind = accessory.context.device.kind;
     this.analogOutput = accessory.context.device.analogOutput;
@@ -220,6 +219,7 @@ export class ContactSensorAccessory {
   constructor(
     private readonly platform: MonarcoPlatform,
     private readonly accessory: PlatformAccessory,
+    private readonly monarco: object,
   ) {
     this.digitalInput = accessory.context.device.digitalInput;
 
