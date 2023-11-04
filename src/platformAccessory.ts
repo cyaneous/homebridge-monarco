@@ -28,7 +28,7 @@ export class LunosFanAccessory {
     Active: false,
     RotationSpeed: 0,
     SwingMode: 0,
-    LockPhysicalControls: 0,
+    TargetFanState: 1,
   };
 
   constructor(
@@ -84,10 +84,10 @@ export class LunosFanAccessory {
       .onGet(this.getSwingMode.bind(this))
       .onSet(this.setSwingMode.bind(this));
 
-    // register handlers for the LockPhysicalControls Characteristic
-    this.service.getCharacteristic(this.platform.Characteristic.LockPhysicalControls)
-      .onGet(this.getLockPhysicalControls.bind(this))
-      .onSet(this.setLockPhysicalControls.bind(this));
+    // register handlers for the TargetFanState Characteristic
+    this.service.getCharacteristic(this.platform.Characteristic.TargetFanState)
+      .onGet(this.getTargetFanState.bind(this))
+      .onSet(this.setTargetFanState.bind(this));
   }
 
   async setActive(value: CharacteristicValue) {
@@ -147,33 +147,34 @@ export class LunosFanAccessory {
     return swingMode;
   }
 
-  async setLockPhysicalControls(value: CharacteristicValue) {
-    this.platform.log.info('Set Characteristic LockPhysicalControls ->', value);
+  async setTargetFanState(value: CharacteristicValue) {
+    this.platform.log.info('Set Characteristic TargetFanState ->', value);
 
-    this.state.LockPhysicalControls = value as number;
+    this.state.TargetFanState = value as number;
     this.updateAnalogOutputState();
   }
 
-  async getLockPhysicalControls(): Promise<CharacteristicValue> {
-    const lockPhysicalControls = this.state.LockPhysicalControls;
+  async getTargetFanState(): Promise<CharacteristicValue> {
+    const targetFanState = this.state.TargetFanState;
 
-    this.platform.log.debug('Get Characteristic LockPhysicalControls ->', lockPhysicalControls);
+    this.platform.log.debug('Get Characteristic TargetFanState ->', targetFanState);
 
     // if you need to return an error to show the device as "Not Responding" in the Home app:
     // throw new this.platform.api.hap.HapStatusError(this.platform.api.hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE);
 
-    return lockPhysicalControls;
+    return targetFanState;
   }
 
   updateAnalogOutputState() {
     const active = this.state.Active;
     const rotationSpeed = this.state.RotationSpeed;
+    const targetFanState = this.state.TargetFanState;
 
     let v = LUNOS_FAN_V.AUTO;
     switch (this.kind) {
       case 'lunosE2':
         if (rotationSpeed <= 0 || !active) {
-          v = this.state.LockPhysicalControls ? LUNOS_FAN_V.STAGE_0 : LUNOS_FAN_V.AUTO;
+          v = targetFanState === this.platform.Characteristic.TargetFanState.AUTO ? LUNOS_FAN_V.AUTO : LUNOS_FAN_V.STAGE_0;
         } else if (rotationSpeed <= 25) {
           v = LUNOS_FAN_V.STAGE_2;
         } else if (rotationSpeed <= 50) {
@@ -186,7 +187,7 @@ export class LunosFanAccessory {
         break;
       case 'lunosEgo':
         if (rotationSpeed <= 0 || !active) {
-          v = this.state.LockPhysicalControls ? LUNOS_FAN_V.STAGE_0 : LUNOS_FAN_V.AUTO;
+          v = targetFanState === this.platform.Characteristic.TargetFanState.AUTO ? LUNOS_FAN_V.AUTO : LUNOS_FAN_V.STAGE_0;
         } else if (rotationSpeed <= 25) {
           v = LUNOS_FAN_V.STAGE_2;
         } else if (rotationSpeed <= 50) {
