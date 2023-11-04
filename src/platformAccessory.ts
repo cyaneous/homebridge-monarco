@@ -261,8 +261,11 @@ export class ContactSensorAccessory {
           const contactSensorState = data.digitalInputs[this.digitalInput-1] ?
             this.platform.Characteristic.ContactSensorState.CONTACT_NOT_DETECTED :
             this.platform.Characteristic.ContactSensorState.CONTACT_DETECTED;
-          this.state.ContactSensorState = contactSensorState;
-          this.service.setCharacteristic(this.platform.Characteristic.ContactSensorState, contactSensorState);
+
+          if this.state.ContactSensorState != contactSensorState) {
+            this.state.ContactSensorState = contactSensorState;
+            this.service.setCharacteristic(this.platform.Characteristic.ContactSensorState, contactSensorState);
+          }
         }
       }
     });
