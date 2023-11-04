@@ -22,13 +22,13 @@ export class LunosFanAccessory {
   private service: Service;
   private kind: string;
   private analogOutput: number;
-  private autoVentilationEnabled: boolean;
   private model: string;
 
   private state = {
     Active: false,
     RotationSpeed: 0,
-    ContactSensorState: 0,
+    SwingMode: 0,
+    LockPhysicalControls: 0,
   };
 
   constructor(
@@ -37,7 +37,6 @@ export class LunosFanAccessory {
   ) {
     this.kind = accessory.context.device.kind;
     this.analogOutput = accessory.context.device.analogOutput;
-    this.autoVentilationEnabled = accessory.context.device.autoVentilationEnabled;
 
     if (this.analogOutput < 1 || this.analogOutput > 2) {
       this.platform.log.error(accessory.context.name, ': invalid analog output in configuration:', this.analogOutput);
@@ -77,7 +76,18 @@ export class LunosFanAccessory {
     // register handlers for the RotationSpeed Characteristic
     this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed)
       .setProps({ minStep: 25, minValue: 0, maxValue: 100 })
+      .onGet(this.getRotationSpeed.bind(this))
       .onSet(this.setRotationSpeed.bind(this));
+
+    // register handlers for the SwingMode Characteristic
+    this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
+      .onGet(this.getSwingMode.bind(this))
+      .onSet(this.setSwingMode.bind(this));
+
+    // register handlers for the LockPhysicalControls Characteristic
+    this.service.getCharacteristic(this.platform.Characteristic.LockPhysicalControls)
+      .onGet(this.getLockPhysicalControls.bind(this))
+      .onSet(this.setLockPhysicalControls.bind(this));
   }
 
   async setActive(value: CharacteristicValue) {
@@ -88,7 +98,6 @@ export class LunosFanAccessory {
   }
 
   async getActive(): Promise<CharacteristicValue> {
-    // implement your own code to check if the device is on
     const active = this.state.Active;
 
     this.platform.log.debug('Get Characteristic Active ->', active);
@@ -116,6 +125,42 @@ export class LunosFanAccessory {
     return rotationSpeed;
   }
 
+  async setSwingMode(value: CharacteristicValue) {
+    this.platform.log.info('Set Characteristic SwingMode ->', value);
+
+    this.state.SwingMode = value as number;
+    this.updateAnalogOutputState();
+  }
+
+  async getSwingMode(): Promise<CharacteristicValue> {
+    const swingMode = this.state.SwingMode;
+
+    this.platform.log.debug('Get Characteristic SwingMode ->', swingMode);
+
+    // if you need to return an error to show the device as "Not Responding" in the Home app:
+    // throw new this.platform.api.hap.HapStatusError(this.platform.api.hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE);
+
+    return swingMode;
+  }
+
+  async setLockPhysicalControls(value: CharacteristicValue) {
+    this.platform.log.info('Set Characteristic LockPhysicalControls ->', value);
+
+    this.state.LockPhysicalControls = value as number;
+    this.updateAnalogOutputState();
+  }
+
+  async getLockPhysicalControls(): Promise<CharacteristicValue> {
+    const lockPhysicalControls = this.state.LockPhysicalControls;
+
+    this.platform.log.debug('Get Characteristic LockPhysicalControls ->', lockPhysicalControls);
+
+    // if you need to return an error to show the device as "Not Responding" in the Home app:
+    // throw new this.platform.api.hap.HapStatusError(this.platform.api.hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE);
+
+    return lockPhysicalControls;
+  }
+
   updateAnalogOutputState() {
     const active = this.state.Active;
     const rotationSpeed = this.state.RotationSpeed;
@@ -124,32 +169,36 @@ export class LunosFanAccessory {
     switch (this.kind) {
       case 'lunosE2':
         if (rotationSpeed <= 0 || !active) {
-          v = this.autoVentilationEnabled ? LUNOS_FAN_V.AUTO : LUNOS_FAN_V.STAGE_0;
+          v = this.state.LockPhysicalControls ? LUNOS_FAN_V.STAGE_0 : LUNOS_FAN_V.AUTO;
         } else if (rotationSpeed <= 25) {
-          v = LUNOS_FAN_V.STAGE_2;
+          v = LUNOS_FAN_V.STAGE_5;
         } else if (rotationSpeed <= 50) {
-          v = LUNOS_FAN_V.STAGE_4;
-        } else if (rotationSpeed <= 75) {
           v = LUNOS_FAN_V.STAGE_6;
+        } else if (rotationSpeed <= 75) {
+          v = LUNOS_FAN_V.STAGE_7;
         } else if (rotationSpeed <= 100) {
           v = LUNOS_FAN_V.STAGE_8;
         }
         break;
       case 'lunosEgo':
         if (rotationSpeed <= 0 || !active) {
-          v = this.autoVentilationEnabled ? LUNOS_FAN_V.AUTO : LUNOS_FAN_V.STAGE_0;
+          v = this.state.LockPhysicalControls ? LUNOS_FAN_V.STAGE_0 : LUNOS_FAN_V.AUTO;
         } else if (rotationSpeed <= 25) {
-          v = LUNOS_FAN_V.STAGE_6;
+          v = LUNOS_FAN_V.STAGE_5;
         } else if (rotationSpeed <= 50) {
-          v = LUNOS_FAN_V.STAGE_7;
+          v = LUNOS_FAN_V.STAGE_6;
         } else if (rotationSpeed <= 75) {
-          v = LUNOS_FAN_V.STAGE_8;
+          v = LUNOS_FAN_V.STAGE_7;
         } else if (rotationSpeed <= 100) {
-          v = LUNOS_FAN_V.STAGE_8 + LUNOS_FAN_V.SUMMER_OFFSET;
+          v = LUNOS_FAN_V.STAGE_8;
         }
         break;
       default:
         this.platform.log.error('Unexpected Lunos fan kind:', this.kind);
+    }
+
+    if (this.state.SwingMode) {
+      v += LUNOS_FAN_V.SUMMER_OFFSET;
     }
 
     if (this.analogOutput >= 1 && this.analogOutput <= 2) {

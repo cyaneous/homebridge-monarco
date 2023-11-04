@@ -68,13 +68,6 @@
                 }
               ]
             },
-            "autoVentilationEnabled": {
-              "title": "Enable Automatic Ventilation",
-              "description": "Allows the Lunos controller to control the fan while idle.",
-              "type": "boolean",
-              "required": true,
-              "default": true
-            },
             "digitalInput": {
               "title": "Digital Input",
               "description": "The digital input used for this device.",
@@ -165,9 +158,6 @@
                 },
                 {
                   "key": "devices[].kind"
-                },
-                {
-                  "key": "devices[].autoVentilationEnabled"
                 },
                 {
                   "key": "devices[].digitalInput"
