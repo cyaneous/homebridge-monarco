@@ -94,7 +94,13 @@ export class LunosFanAccessory {
     this.platform.log.info('Set Characteristic Active ->', value);
 
     if (this.state.Active && this.state.RotationSpeed === 0) {
-      this.state.RotationSpeed = 100;
+      switch (this.kind) {
+        case 'lunosEgo':
+          this.state.RotationSpeed = 75; // avoid exhaust mode by default
+          break;
+        default:
+          this.state.RotationSpeed = 100;
+      }
     }
 
     this.state.Active = value as boolean;
