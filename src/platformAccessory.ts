@@ -93,6 +93,10 @@ export class LunosFanAccessory {
   async setActive(value: CharacteristicValue) {
     this.platform.log.info('Set Characteristic Active ->', value);
 
+    if (this.state.Active == 0 && this.state.RotationSpeed == 0) {
+      this.state.RotationSpeed = 100;
+    }
+
     this.state.Active = value as boolean;
     this.updateAnalogOutputState();
   }
