@@ -32,7 +32,7 @@ export class LunosFanAccessory {
   constructor(
     private readonly platform: MonarcoPlatform,
     private readonly accessory: PlatformAccessory,
-    private readonly monarco: object,
+    private readonly monarco,
   ) {
     this.kind = accessory.context.device.kind;
     this.analogOutput = accessory.context.device.analogOutput;
@@ -219,7 +219,7 @@ export class ContactSensorAccessory {
   constructor(
     private readonly platform: MonarcoPlatform,
     private readonly accessory: PlatformAccessory,
-    private readonly monarco: object,
+    private readonly monarco,
   ) {
     this.digitalInput = accessory.context.device.digitalInput;
 
