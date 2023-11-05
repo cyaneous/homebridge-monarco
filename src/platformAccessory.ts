@@ -93,7 +93,7 @@ export class LunosFanAccessory {
     monarco.on('rx', (data) => {
       tick++;
 
-      if(tick % 32 === 0) {
+      if(tick % 64 === 0) {
         this.platform.log.debug('rx', data);
         this.updateAnalogOutputState();
       }
@@ -168,20 +168,17 @@ export class LunosFanAccessory {
   }
 
   updateAnalogOutputState() {
-    if (this.analogOutput > 1 || this.analogOutput > 2) {
-      return;
-    }
-
     const active = this.state.Active;
     const rotationSpeed = this.state.RotationSpeed;
     const swingMode = this.state.SwingMode;
     const targetFanState = this.state.TargetFanState;
+    const auto = (targetFanState === this.platform.Characteristic.TargetFanState.AUTO);
 
     let v = LUNOS_FAN_V.AUTO;
     switch (this.kind) {
       case 'lunosE2':
         if (rotationSpeed <= 0 || !active) {
-          v = targetFanState === this.platform.Characteristic.TargetFanState.AUTO ? LUNOS_FAN_V.AUTO : LUNOS_FAN_V.STAGE_0;
+          v = auto ? LUNOS_FAN_V.AUTO : LUNOS_FAN_V.STAGE_0;
         } else if (rotationSpeed <= 25) {
           v = LUNOS_FAN_V.STAGE_2;
         } else if (rotationSpeed <= 50) {
@@ -194,7 +191,7 @@ export class LunosFanAccessory {
         break;
       case 'lunosEgo':
         if (rotationSpeed <= 0 || !active) {
-          v = targetFanState === this.platform.Characteristic.TargetFanState.AUTO ? LUNOS_FAN_V.AUTO : LUNOS_FAN_V.STAGE_0;
+          v = auto ? LUNOS_FAN_V.AUTO : LUNOS_FAN_V.STAGE_0;
         } else if (rotationSpeed <= 25) {
           v = LUNOS_FAN_V.STAGE_2;
         } else if (rotationSpeed <= 50) {
@@ -213,8 +210,9 @@ export class LunosFanAccessory {
       v += LUNOS_FAN_V.SUMMER_OFFSET;
     }
 
-    this.platform.log.info(this.accessory.context.device.name, ': setting analog output', this.analogOutput, 'to:', v);
+    //this.platform.log.info(this.accessory.context.device.name, ': setting analog output', this.analogOutput, 'to:', v);
     this.monarco.analogOutputs[this.analogOutput-1] = v;
+    this.platform.log.info('outputs:', this.monarco.analogOutputs);
   }
 
 }
@@ -269,7 +267,7 @@ export class ContactSensorAccessory {
 
         if (this.state.ContactSensorState !== contactSensorState) {
           this.state.ContactSensorState = contactSensorState;
-          this.service.setCharacteristic(this.platform.Characteristic.ContactSensorState, contactSensorState);
+          this.service.updateCharacteristic(this.platform.Characteristic.ContactSensorState, contactSensorState);
         }
       }
     });
