@@ -213,7 +213,7 @@ export class LunosFanAccessory {
       v += LUNOS_FAN_V.SUMMER_OFFSET;
     }
 
-    this.platform.log.info('Setting analog output', this.analogOutput, 'to:', v);
+    //this.platform.log.info('Setting analog output', this.analogOutput, 'to:', v);
     this.monarco.analogOutputs[this.analogOutput-1] = v;
   }
 
