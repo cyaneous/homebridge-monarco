@@ -135,6 +135,9 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
         // this is imported from `platformAccessory.ts`
         this.instantiateAccessory(device, existingAccessory, monarco);
 
+        // update accessory context device object
+        accessory.context.device = device;
+
         // it is possible to remove platform accessories at any time using `api.unregisterPlatformAccessories`, eg.:
         // remove platform accessories when no longer present
         // this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [existingAccessory]);
