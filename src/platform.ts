@@ -128,15 +128,12 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
         this.log.info('Restoring existing accessory from cache:', existingAccessory.displayName);
 
         // if you need to update the accessory.context then you should run `api.updatePlatformAccessories`. eg.:
-        // existingAccessory.context.device = device;
-        // this.api.updatePlatformAccessories([existingAccessory]);
+        existingAccessory.context.device = device;
+        this.api.updatePlatformAccessories([existingAccessory]);
 
         // create the accessory handler for the restored accessory
         // this is imported from `platformAccessory.ts`
         this.instantiateAccessory(device, existingAccessory, monarco);
-
-        // update accessory context device object
-        accessory.context.device = device;
 
         // it is possible to remove platform accessories at any time using `api.unregisterPlatformAccessories`, eg.:
         // remove platform accessories when no longer present
