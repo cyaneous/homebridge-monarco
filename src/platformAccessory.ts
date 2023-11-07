@@ -315,6 +315,7 @@ export class ProgrammableSwitchAccessory {
 
     // register handlers for the Active Characteristic
     this.service.getCharacteristic(this.platform.Characteristic.ProgrammableSwitchEvent)
+      .setProps({ minStep: 1, minValue: 0, maxValue: 0 })
       .onGet(this.getProgrammableSwitchEvent.bind(this));
 
     if (this.digitalInput < 1 || this.digitalInput > 4) {
