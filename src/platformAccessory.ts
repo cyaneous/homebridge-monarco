@@ -109,7 +109,7 @@ export class LunosFanAccessory {
   async getActive(): Promise<CharacteristicValue> {
     const active = this.state.Active;
 
-    this.platform.log.debug('Get Characteristic Active ->', active);
+    this.platform.log.info('Get Characteristic Active ->', active);
 
     // if you need to return an error to show the device as "Not Responding" in the Home app:
     // throw new this.platform.api.hap.HapStatusError(this.platform.api.hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE);
@@ -125,7 +125,7 @@ export class LunosFanAccessory {
   async getRotationSpeed(): Promise<CharacteristicValue> {
     const rotationSpeed = this.state.RotationSpeed;
 
-    this.platform.log.debug('Get Characteristic RotationSpeed ->', rotationSpeed);
+    this.platform.log.info('Get Characteristic RotationSpeed ->', rotationSpeed);
 
     // if you need to return an error to show the device as "Not Responding" in the Home app:
     // throw new this.platform.api.hap.HapStatusError(this.platform.api.hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE);
@@ -142,7 +142,7 @@ export class LunosFanAccessory {
   async getSwingMode(): Promise<CharacteristicValue> {
     const swingMode = this.state.SwingMode;
 
-    this.platform.log.debug('Get Characteristic SwingMode ->', swingMode);
+    this.platform.log.info('Get Characteristic SwingMode ->', swingMode);
 
     // if you need to return an error to show the device as "Not Responding" in the Home app:
     // throw new this.platform.api.hap.HapStatusError(this.platform.api.hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE);
@@ -159,7 +159,7 @@ export class LunosFanAccessory {
   async getTargetFanState(): Promise<CharacteristicValue> {
     const targetFanState = this.state.TargetFanState;
 
-    this.platform.log.debug('Get Characteristic TargetFanState ->', targetFanState);
+    this.platform.log.info('Get Characteristic TargetFanState ->', targetFanState);
 
     // if you need to return an error to show the device as "Not Responding" in the Home app:
     // throw new this.platform.api.hap.HapStatusError(this.platform.api.hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE);

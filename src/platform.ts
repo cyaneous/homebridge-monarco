@@ -134,11 +134,6 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
         // create the accessory handler for the restored accessory
         // this is imported from `platformAccessory.ts`
         this.instantiateAccessory(device, existingAccessory, monarco);
-
-        // it is possible to remove platform accessories at any time using `api.unregisterPlatformAccessories`, eg.:
-        // remove platform accessories when no longer present
-        // this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [existingAccessory]);
-        // this.log.info('Removing existing accessory from cache:', existingAccessory.displayName);
       } else {
         // the accessory does not yet exist, so we need to create it
         this.log.info('Adding new accessory:', device.name);
@@ -156,6 +151,14 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
 
         // link the accessory to your platform
         this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
+      }
+    }
+
+    // remove any stale accessories 
+    for (const accessory of this.accessories) {
+      if (config.devices.find(device => this.api.hap.uuid.generate(device.id) === accessory.UUID) === null) {
+        this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
+        this.log.info('Removing existing accessory from cache:', accessory.displayName);
       }
     }
   }
