@@ -4,7 +4,7 @@
 import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service, Characteristic } from 'homebridge';
 
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
-import { LunosFanAccessory, ContactSensorAccessory } from './platformAccessory';
+import { ContactSensorAccessory, ProgrammableSwitchAccessory, LunosFanAccessory } from './platformAccessory';
 
 import monarco = require('monarco-hat');
 
@@ -167,6 +167,9 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
     switch (device.kind) {
       case 'contactSensor':
         new ContactSensorAccessory(this, accessory, monarco);
+        break;
+      case 'programmableSwitch':
+        new ProgrammableSwitchAccessory(this, accessory, monarco);
         break;
       case 'lunosE2':
         // falls through

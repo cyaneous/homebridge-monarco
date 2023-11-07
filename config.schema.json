@@ -55,6 +55,12 @@
                   ]
                 },
                 {
+                  "title": "Programmable Switch",
+                  "enum": [
+                    "programmableSwitch"
+                  ]
+                },
+                {
                   "title": "Lunos e2",
                   "enum": [
                     "lunosE2"
@@ -77,7 +83,7 @@
               "minimum": 1,
               "maximum": 4,
               "condition": {
-                "functionBody": "return arrayIndices !== null && ['contactSensor'].includes(model.devices[arrayIndices].kind);;"
+                "functionBody": "return arrayIndices !== null && ['contactSensor', 'programmableSwitch'].includes(model.devices[arrayIndices].kind);;"
               }
             },
             "analogInput": {
