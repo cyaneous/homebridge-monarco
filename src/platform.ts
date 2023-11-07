@@ -154,7 +154,7 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
       }
     }
 
-    // remove any stale accessories 
+    // remove any stale accessories
     for (const accessory of this.accessories) {
       if (config.devices.find(device => this.api.hap.uuid.generate(device.id) === accessory.UUID) === null) {
         this.log.info('Removing existing accessory from cache:', accessory.displayName);
