@@ -1,7 +1,7 @@
 {
   "displayName": "Homebridge Monarco",
   "name": "homebridge-monarco",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Homebridge platform supporting the Monarco HAT on Raspberry Pi.",
   "license": "MIT",
   "repository": {
