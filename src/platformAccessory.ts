@@ -1,4 +1,4 @@
-import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
+16import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
 
 import { MonarcoPlatform } from './platform';
 
@@ -90,11 +90,11 @@ export class LunosFanAccessory {
     }
 
     let tick = 0;
-    monarco.on('rx', (data) => {
+    monarco.on('rx', () => {
       tick++;
 
       if(tick % 64 === 0) {
-        this.updateAnalogOutputState(data);
+        this.updateAnalogOutputState();
       }
     });
   }
@@ -166,7 +166,7 @@ export class LunosFanAccessory {
     return targetFanState;
   }
 
-  updateAnalogOutputState(data) {
+  updateAnalogOutputState() {
     const active = this.state.Active;
     const rotationSpeed = this.state.RotationSpeed;
     const swingMode = this.state.SwingMode;
