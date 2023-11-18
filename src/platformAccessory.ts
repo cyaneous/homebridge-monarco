@@ -94,7 +94,7 @@ export class LunosFanAccessory {
       tick++;
 
       if(tick % 64 === 0) {
-        this.updateAnalogOutputState();
+        this.updateAnalogOutputState(data);
       }
     });
   }
@@ -166,7 +166,7 @@ export class LunosFanAccessory {
     return targetFanState;
   }
 
-  updateAnalogOutputState() {
+  updateAnalogOutputState(data) {
     const active = this.state.Active;
     const rotationSpeed = this.state.RotationSpeed;
     const swingMode = this.state.SwingMode;
