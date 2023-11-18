@@ -1,4 +1,4 @@
-16import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
+import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
 
 import { MonarcoPlatform } from './platform';
 
