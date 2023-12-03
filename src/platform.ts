@@ -20,7 +20,7 @@ const SDC_FIXED_CPUID3 = 7;
 const SDC_FIXED_CPUID4 = 8;
 const SDC_FIXED_RS485BAUD = 0x1010;
 const SDC_FIXED_RS485MODE = 0X1011;
-const SDC_FIXED_HOSTUARTBAUD = 0x1012;
+//const SDC_FIXED_HOSTUARTBAUD = 0x1012;
 const SDC_FIXED_WATCHDOG = 0X100F;
 const SDC_FIXED_CNT1MODE = 0x1024;
 const SDC_FIXED_CNT2MODE = 0x1025;
@@ -109,7 +109,7 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
         digitalInput: 0,
         digitalOutput: 0,
         analogInput: 0,
-        analogOutput: 0
+        analogOutput: 0,
       }, device);
 
       // generate a unique id for the accessory this should be generated from
