@@ -4,7 +4,9 @@
 import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service, Characteristic } from 'homebridge';
 
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
-import { ContactSensorAccessory, ProgrammableSwitchAccessory, LunosFanAccessory } from './platformAccessory';
+import { ContactSensorAccessory } from './accessories/contactSensor';
+import { LunosFanAccessory } from './accessories/contactSensor';
+import { ProgrammableSwitchAccessory } from './accessories/contactSensor';
 
 import monarco = require('monarco-hat');
 
@@ -18,6 +20,7 @@ const SDC_FIXED_CPUID3 = 7;
 const SDC_FIXED_CPUID4 = 8;
 const SDC_FIXED_RS485BAUD = 0x1010;
 const SDC_FIXED_RS485MODE = 0X1011;
+const SDC_FIXED_HOSTUARTBAUD = 0x1012;
 const SDC_FIXED_WATCHDOG = 0X100F;
 const SDC_FIXED_CNT1MODE = 0x1024;
 const SDC_FIXED_CNT2MODE = 0x1025;
@@ -63,13 +66,14 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
         const CPUID_2 = (this.getRegValue(monarco.serviceData, SDC_FIXED_CPUID2) << 16)
           + (this.getRegValue(monarco.serviceData, SDC_FIXED_CPUID1));
 
-        this.log.info('MONARCO SDC INIT DONE, FW=' + this.pad(FW.toString(16), 8) + ', HW=' +
+        this.log.info('MONARCO FW=' + this.pad(FW.toString(16), 8) + ', HW=' +
           this.pad(HW.toString(16), 8) + ', CPUID=' + this.pad(CPUID_1, 8) + this.pad(CPUID_2, 8));
 
         this.setRegValue(monarco.serviceData, SDC_FIXED_CNT1MODE, monarco.SDC.MONARCO_SDC_COUNTER_MODE_OFF);
         this.setRegValue(monarco.serviceData, SDC_FIXED_CNT2MODE, monarco.SDC.MONARCO_SDC_COUNTER_MODE_OFF);
         this.setRegValue(monarco.serviceData, SDC_FIXED_RS485BAUD, 384);
         this.setRegValue(monarco.serviceData, SDC_FIXED_RS485MODE, monarco.SDC.MONARCO_SDC_RS485_DEFAULT_MODE);
+        //this.setRegValue(monarco.serviceData, SDC_FIXED_HOSTUARTBAUD, 0);
         this.setRegValue(monarco.serviceData, SDC_FIXED_WATCHDOG, config.watchdogTimeout * 1000);
 
         monarco.on('err', (err, msg) => {
