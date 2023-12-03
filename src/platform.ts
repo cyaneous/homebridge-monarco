@@ -4,9 +4,9 @@
 import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service, Characteristic } from 'homebridge';
 
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
-import { ContactSensorAccessory } from './accessories/contactSensor';
-import { LunosFanAccessory } from './accessories/contactSensor';
-import { ProgrammableSwitchAccessory } from './accessories/contactSensor';
+import { ContactSensorAccessory } from './devices/contactSensor';
+import { LunosFanAccessory } from './devices/lunosFan';
+import { ProgrammableSwitchAccessory } from './devices/programmableSwitch';
 
 import monarco = require('monarco-hat');
 
@@ -103,20 +103,14 @@ export class MonarcoPlatform implements DynamicPlatformPlugin {
 
   configureDevices(config) {
     // loop over the discovered devices and register each one if it has not already been registered
-    for (const device of config.devices) {
+    for (let device of config.devices) {
       // input/output defaults
-      if (device.digitalInput === undefined) {
-        device.digitalInput = 0;
-      }
-      if (device.digitalOutput === undefined) {
-        device.digitalOutput = 0;
-      }
-      if (device.analogInput === undefined) {
-        device.analogInput = 0;
-      }
-      if (device.analogOutput === undefined) {
-        device.analogOutput = 0;
-      }
+      device = Object.assign({
+        digitalInput: 0,
+        digitalOutput: 0,
+        analogInput: 0,
+        analogOutput: 0
+      }, device);
 
       // generate a unique id for the accessory this should be generated from
       // something globally unique, but constant, for example, the device serial
